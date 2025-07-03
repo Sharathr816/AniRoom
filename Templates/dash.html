@@ -1,0 +1,66 @@
+{%  extends 'Base.html' %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<!--<h2>WELCOME {{name}}</h2>-->
+<div class="header">
+    <div class="left" ><li><a class="link-shit" href="#" id="le">Menu</a></li></div>
+    <div class="center"><h1>AniRepo</h1></div>
+    <div class="right">
+        <li class="rig"><a class="link-shit" href="{% url 'profy' %}" >Profile</a></li>
+        <li class="rig"><a class="link-shit" href="#" id="search-link">Search</a></li>
+        <li class="rig"><a class="link-shit" href="{% url 'ani_page' %}" >Uploads</a></li>
+    </div>
+</div>
+
+<div id="search-container">
+        <input type="text" placeholder="Search..." id="search-bar">
+</div>
+
+
+
+<div class="main-content">
+    <div class="hero">
+        <img src="..\static\Images\colorful girl.png" width="100%" >
+    </div>
+
+    <div class="recommends">
+        <div class="Carousel" id="recents">
+            <a class="img-box" href="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSWLrs7g_6HhzqGrDwzDYrcPjAm-4pcb62XTdBgiplHjepk4RRr"><div >Recent Uploads1</div></a>
+            <div class="img-box">Recent Uploads2</div>
+            <div class="img-box">Recent Uploads3</div>
+            <div class="img-box">Recent Uploads4</div>
+            <div class="img-box">Recent Uploads5</div>
+        </div>
+
+        <div class="Carousel" id="ani">
+            <div class="img-box">Animes1</div>
+            <div class="img-box">Animes2</div>
+            <div class="img-box">animes3</div>
+            <div class="img-box">animes4</div>
+            <div class="img-box">animes5</div>
+        </div>
+
+        <div class="Carousel" id="img">
+            <div class="img-box">images1</div>
+            <div class="img-box">images2</div>
+            <div class="img-box">images3</div>
+            <div class="img-box">images4</div>
+            <div class="img-box">images5</div>
+        </div>
+
+        <div class="Carousel" id="clip">
+            <div class="img-box">clips1</div>
+            <div class="img-box">clips2</div>
+            <div class="img-box">clips3</div>
+            <div class="img-box">Clips4</div>
+            <div class="img-box">Clips5</div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'JavaScripts/home.js' %}"></script>
+
+{% endblock %}

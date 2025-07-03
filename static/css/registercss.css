@@ -1,0 +1,84 @@
+body{
+    background: url("../Images/daily-dose-of-silver-wolf-v0-xmsfcojqx4rb1.jpg") no-repeat  scroll;/*go one folder up and search images*/
+    background-position:top right;
+    /*background-size:cover;/*contain = exact background image size, cover = cover the webpage*/
+    /*background-repeat:no-repeat;/*for repeat use x-repeat*/
+    /*background-position: bottom;/*Sets the starting position of a background image*/
+    /*background-attachments:scroll;/*background image should be fixed or can scroll*/
+    /*OR can use this  background: #ffffff url("img_tree.png") no-repeat right top;*/
+}
+
+
+.center{
+    text-align:center;
+    color:yellow;
+    font-size:20px;
+    line-height:10px;
+}
+
+
+h2.center{
+    color:Azure;
+    /*hue, saturation , lightness*/
+    font-size:70px;
+    margin:60px 0 20px 0;
+}
+
+
+.form-box
+{
+    height: 600px;
+    width:500px;
+    border-radius:20px;
+    background-color: transparent;
+    opacity:1;/*transparency*/
+    display: flex;
+    flex-direction: column;
+    /*background-image:url("../Images/photo_2025-04-18_12-49-31.jpg");
+    background-position:top;*/
+    margin:auto;/*to horizontally align div to center*/
+    margin-top:100px;
+
+}
+
+
+input
+{
+    border:2px inset aqua;
+    border-radius:15px;
+    height:50px;
+    width:375px;
+    margin:10px;
+    text-align:center;
+    background-color:#00FFFF;
+}
+
+
+.butt
+{
+    margin:10px;
+    border:1px;
+    height:40px;
+    width:200px;
+    border-radius:20px;
+    background-color:red;
+    color:white;
+}
+
+
+.butt:hover
+{
+    background-color:DarkBlue;
+    height:45px;
+    width:205px;
+}
+
+a{
+    color:CornSilk;
+}
+a:hover{
+    color:blue;
+}
+
+
+
