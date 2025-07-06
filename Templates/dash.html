@@ -13,7 +13,7 @@
     <div class="right">
         <li class="rig"><a class="link-shit" href="{% url 'profy' %}" >Profile</a></li>
         <li class="rig"><a class="link-shit" href="#" id="search-link">Search</a></li>
-        <li class="rig"><a class="link-shit" href="{% url 'UpPage' %}" >Uploads</a></li>
+        <li class="rig"><a class="link-shit" href="{% url 'UpPage' %}" >Rooms</a></li>
     </div>
 </div>
 
@@ -32,16 +32,18 @@
     <div class="recommends">
         <div class="Carousel" id="recents">
             <div class="anime-grid">
-              {% for anime in animes %}
+              {% for room in rooms %}
+                <a  href="{% url 'RoomPage' room.id %}" class="room-link">
                 <div class="anime-card">
-                  <img src="{{ anime.image.url }}" alt="{{ anime.title }}" class="anime-image">
-                  <h3>{{ anime.title }}</h3>
-                  <p>{{ anime.desc }}</p>
-                  <small>Uploaded by: {{ anime.uploaded_by }}</small>
+                  <img src="{{ room.image.url }}" alt="{{ room.title }}" class="anime-image">
+                  <h3>{{ room.title }}</h3>
+                  <p>{{ room.desc }}</p>
+                  <small>Uploaded by: {{ room.uploaded_by }}</small>
                 </div>
               {% empty %}
-                <p>No anime uploaded yet 😿</p>
+                <p>No rooms created yet 😿</p>
               {% endfor %}
+                </a>
             </div>
         </div>
 

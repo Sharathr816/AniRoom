@@ -1,0 +1,26 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/room_detail.css' %}">
+
+<div class="room-container">
+      <div class="room-image">
+        <img src="{{ room.image.url }}" alt="{{ room.title }}">
+      </div>
+
+      <div class="room-details">
+        <h1 class="room-title">{{ room.title }}</h1>
+        <p class="uploaded-by">Uploaded by: {{ room.uploaded_by }}</p>
+        <p class="room-description">{{ room.desc }}</p>
+
+        <div class="room-actions">
+          {% if room.uploaded_by == request.user %}
+            <button class="join-btn">Manage</button>
+            {% else %}
+            <button class="join-btn">Join</button>
+            {% endif %}
+        </div>
+      </div>
+</div>
+{% endblock %}

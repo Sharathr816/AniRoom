@@ -1,0 +1,142 @@
+/* General Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a2525, #2c3e50); /* Dark gray to black gradient */
+    color: #ecf0f1; /* Light gray text */
+    min-height: 100vh;
+    padding: 40px;
+}
+
+/* Room Container */
+.room-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.8); /* Black with transparency */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 20px;
+}
+
+/* Room Image */
+.room-image {
+    flex: 1 1 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.room-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 2px solid #1abc9c; /* Turquoise border */
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+}
+
+.room-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Room Details */
+.room-details {
+    flex: 1 1 400px;
+    padding: 20px;
+    color: #ecf0f1;
+}
+
+.room-title {
+    font-size: 2.5rem;
+    color: #1abc9c; /* Turquoise title */
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+}
+
+.uploaded-by {
+    font-size: 0.9rem;
+    color: #bdc3c7; /* Light gray */
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.room-description {
+    font-size: 1.1rem;
+    color: #ecf0f1;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: justify;
+}
+
+/* Room Actions */
+.room-actions {
+    text-align: center;
+}
+
+.join-btn {
+    background-color: #1abc9c; /* Turquoise button */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.join-btn:hover {
+    background-color: #16a085; /* Darker turquoise */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(26, 188, 156, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .room-container {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .room-image {
+        flex: 1 1 100%;
+    }
+
+    .room-details {
+        flex: 1 1 100%;
+        padding: 15px;
+    }
+
+    .room-title {
+        font-size: 2rem;
+    }
+
+    .join-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .room-container {
+        padding: 10px;
+    }
+
+    .room-title {
+        font-size: 1.5rem;
+    }
+
+    .room-description {
+        font-size: 1rem;
+    }
+}

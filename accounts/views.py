@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth import authenticate, login as auth_login
 
 
 
@@ -38,22 +39,27 @@ def register(request):
 
 
 
+
+
 def login(request):
-    #create a small memory that user logged in
     if request.method == "POST":
-        # get the username and password posted by user
-        user = request.POST['user']
-        passw = request.POST['pass']
+        username = request.POST['user']
+        password = request.POST['pass']
 
-        #authenticate the user
-        auth = authenticate(username = user, password = passw)
-        if auth is not None: #if correct username and password
-            request.session["log_user"] = user #create a session for the user so that he can surf the app through differnt url's without logging in again and agian
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            # ✅ Proper login that Django recognizes
+            auth_login(request, user)
+
+            # ✅ Redirect to where user wanted to go (like /animesdashboard/)
+            next_url = request.GET.get('next')
+            return redirect(next_url) if next_url else redirect('dashboard')
+
         else:
-            return render(request, 'login.html', {'mess' : "Invalid"})
-        return redirect('dashboard')
+            return render(request, 'login.html', {'mess': "Invalid"})
 
-    return render(request, 'login.html', {'mess' :message});
+    return render(request, 'login.html')
+
 
 
 # @login_required
@@ -65,6 +71,4 @@ def login(request):
 
 
 def profile(request):
-    if 'log_user' in request.session:
-        return render(request, 'prof.html', {'name': request.session['log_user']})
-    return redirect('login')
+    return render(request, 'prof.html')

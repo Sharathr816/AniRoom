@@ -20,6 +20,8 @@ from . import views
 
 
 urlpatterns = [
-    path('Uploads', views.Upload, name = "UpPage"),
     path('dashboard/', views.dashboard, name = "dashboard"),
+    path('create_room', views.create_room, name = "UpPage"),
+    path('room/<int:id>/', views.room_details, name = 'RoomPage')
+
 ]

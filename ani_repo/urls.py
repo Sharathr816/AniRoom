@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
+#executed in ordered fashion
 urlpatterns = [
     path('', include('accounts.urls')),
     path('animes', include('animes.urls'))

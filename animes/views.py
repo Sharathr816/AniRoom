@@ -1,12 +1,22 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import Anime
+from .models import Room
 from django.contrib import messages
 # Create your views here.
 
+@login_required #default login url is "login/", should have default in urls.py or change in settings.py LOGIN_URL = /Login/
+def dashboard(request):
+    query = request.GET.get("q")
+    if query:
+        room = Room.objects.filter(title__icontains = query)
+    else:
+        room = Room.objects.all().order_by('-id')
+    return render(request, 'dash.html', {'rooms' : room})
+
+
 @login_required
-def Upload(request):
+def create_room(request):
     if request.method == "POST":
         title = request.POST.get("title")
         desc = request.POST.get("description")
@@ -14,7 +24,7 @@ def Upload(request):
         uploady = request.user
 
         if title and desc and img:
-            Anime.objects.create(title=title, desc=desc, image=img, uploaded_by=uploady)
+            Room.objects.create(title=title, desc=desc, image=img, uploaded_by=uploady)
 
             #Post/Redirect/Get pattern (PRG) to prevent form resubmission
             messages.success(request, "Anime uploaded successfully!")  #for one timw message showing
@@ -22,11 +32,9 @@ def Upload(request):
     return render(request,'AniFold/upload.html')
 
 
+def room_details(request, id=id):
+    if request.method == "GET":
+        room_data = Room.objects.get(id = id)
+        return render(request, 'roompage.html', {'room' : room_data})
 
-def dashboard(request):
-    query = request.GET.get("q")
-    if query:
-        anime = Anime.objects.filter(title__icontains = query)
-    else:
-        anime = Anime.objects.all().order_by('-id')
-    return render(request, 'dash.html', {'animes' : anime})
+
