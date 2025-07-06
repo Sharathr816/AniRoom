@@ -1,0 +1,131 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<style>
+/* General Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+/* Message Styling */
+p {
+    background: rgba(255, 75, 92, 0.1); /* Consistent with primary color #ff4b5c */
+    color: #ff4b5c;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px 18px;
+    border: 1px solid rgba(255, 75, 92, 0.3);
+    border-radius: 6px;
+    margin: 20px auto;
+    max-width: 400px;
+    backdrop-filter: blur(5px);
+}
+
+/* Form Styling */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05); /* Matches anime-card background */
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #e0e0e0;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+input[type="file"]:focus {
+    border-color: #ff4b5c;
+    box-shadow: 0 0 10px rgba(255, 75, 92, 0.5);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #ff4b5c;
+    color: #e0e0e0;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #e03e4e;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+    }
+
+    form {
+        padding: 15px 20px;
+    }
+
+    p {
+        max-width: 90%;
+    }
+}
+</style>
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    {% if messages %}
+    <!-- Because messages is list object -->
+      {% for message in messages %}
+        <p >{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    <label>Title</label>
+    <input type="text" name="title" required><br>
+    <label>Description</label>
+    <textarea name="description" required></textarea><br>
+    <label>Image</label>
+    <input type="file" accept="image/*" name="image" required><br>
+    <button type="submit">Upload</button>
+</form>
+
+{% endblock %}

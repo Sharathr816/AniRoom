@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
-    path('animes', views.ani, name = "ani_page")
+    path('Uploads', views.Upload, name = "UpPage"),
+    path('dashboard/', views.dashboard, name = "dashboard"),
 ]

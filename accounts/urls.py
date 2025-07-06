@@ -17,12 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from animes.views import dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.register, name = "register"),#name is used in form action
-    path('dashboard/', views.dashboard, name = "dashboard"),
+    path('dashboard/', dashboard, name = "dashboard"),
     path('Login/', views.login, name = "login"),#Login in href
-    #path('Uploads', views.uploads, name = "uply"),
     path('Profile', views.profile, name = "profy")
 ]

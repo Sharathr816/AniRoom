@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
@@ -54,11 +56,11 @@ def login(request):
     return render(request, 'login.html', {'mess' :message});
 
 
-
-def dashboard(request):
-    if 'log_user' in request.session:
-        return render(request, 'dash.html', {'name': request.session['log_user']})
-    return redirect('login')
+# @login_required
+# def dashboard(request):
+#     if 'log_user' in request.session:
+#         return render(request, 'dash.html', {'name': request.session['log_user']})
+#     return redirect('login')
 
 
 

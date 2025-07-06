@@ -4,6 +4,8 @@
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+
 <!--<h2>WELCOME {{name}}</h2>-->
 <div class="header">
     <div class="left" ><li><a class="link-shit" href="#" id="le">Menu</a></li></div>
@@ -11,14 +13,15 @@
     <div class="right">
         <li class="rig"><a class="link-shit" href="{% url 'profy' %}" >Profile</a></li>
         <li class="rig"><a class="link-shit" href="#" id="search-link">Search</a></li>
-        <li class="rig"><a class="link-shit" href="{% url 'ani_page' %}" >Uploads</a></li>
+        <li class="rig"><a class="link-shit" href="{% url 'UpPage' %}" >Uploads</a></li>
     </div>
 </div>
 
 <div id="search-container">
-        <input type="text" placeholder="Search..." id="search-bar">
+    <form method="get" action="{% url 'dashboard' %}" id="search-form">
+         <input type="text" name="q" placeholder="Search..." id="search-bar">
+    </form>
 </div>
-
 
 
 <div class="main-content">
@@ -28,11 +31,18 @@
 
     <div class="recommends">
         <div class="Carousel" id="recents">
-            <a class="img-box" href="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSWLrs7g_6HhzqGrDwzDYrcPjAm-4pcb62XTdBgiplHjepk4RRr"><div >Recent Uploads1</div></a>
-            <div class="img-box">Recent Uploads2</div>
-            <div class="img-box">Recent Uploads3</div>
-            <div class="img-box">Recent Uploads4</div>
-            <div class="img-box">Recent Uploads5</div>
+            <div class="anime-grid">
+              {% for anime in animes %}
+                <div class="anime-card">
+                  <img src="{{ anime.image.url }}" alt="{{ anime.title }}" class="anime-image">
+                  <h3>{{ anime.title }}</h3>
+                  <p>{{ anime.desc }}</p>
+                  <small>Uploaded by: {{ anime.uploaded_by }}</small>
+                </div>
+              {% empty %}
+                <p>No anime uploaded yet 😿</p>
+              {% endfor %}
+            </div>
         </div>
 
         <div class="Carousel" id="ani">
@@ -59,6 +69,13 @@
             <div class="img-box">Clips5</div>
         </div>
     </div>
+
+
+<h2 style="text-align: center;">Uploaded Anime List</h2>
+
+
+
+
 </div>
 
 <script src="{% static 'JavaScripts/home.js' %}"></script>
