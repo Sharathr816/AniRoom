@@ -16,11 +16,16 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#for storage of images
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+#for login purposes
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/animesdashboard/'
+
+TAILWIND_APP_NAME = 'theme'  # tells django-tailwind which app uses tailwind
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,7 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'animes'
+    'animes',
+    'tailwind',#Django-Tailwind integration app.Knows where your Tailwind config lives
+    'theme' #app name for styling(consists of tailwind)
 ]
 
 MIDDLEWARE = [

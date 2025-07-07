@@ -23,7 +23,9 @@ from django.conf.urls.static import static
 #executed in ordered fashion
 urlpatterns = [
     path('', include('accounts.urls')),
-    path('animes', include('animes.urls'))
+    path('AniRoom', include('animes.urls'))
 ]
+
+#for media storage(room poster)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
