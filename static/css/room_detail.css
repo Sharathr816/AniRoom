@@ -7,18 +7,18 @@
 }
 
 body {
-    background: linear-gradient(135deg, #1a2525, #2c3e50); /* Dark gray to black gradient */
-    color: #ecf0f1; /* Light gray text */
+    background: linear-gradient(135deg, #1a1a2e, #16213e); /* Consistent dark gradient */
+    color: #e0e0e0; /* Light gray text */
     min-height: 100vh;
     padding: 40px;
 }
 
 /* Room Container */
 .room-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
-    background: rgba(0, 0, 0, 0.8); /* Black with transparency */
-    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -38,7 +38,7 @@ body {
     width: 100%;
     height: auto;
     display: block;
-    border: 2px solid #1abc9c; /* Turquoise border */
+    border: 2px solid #ff4b5c; /* Consistent pink-red border */
     border-radius: 10px;
     transition: transform 0.4s ease;
 }
@@ -51,40 +51,42 @@ body {
 .room-details {
     flex: 1 1 400px;
     padding: 20px;
-    color: #ecf0f1;
+    color: #e0e0e0;
 }
 
 .room-title {
     font-size: 2.5rem;
-    color: #1abc9c; /* Turquoise title */
+    color: #ff4b5c; /* Pink-red title */
     margin-bottom: 1rem;
     text-align: center;
-    text-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+    text-shadow: 0 0 5px rgba(255, 75, 92, 0.5);
 }
 
 .uploaded-by {
     font-size: 0.9rem;
-    color: #bdc3c7; /* Light gray */
+    color: #b0b0b0; /* Light gray */
     margin-bottom: 1rem;
     text-align: center;
 }
 
 .room-description {
     font-size: 1.1rem;
-    color: #ecf0f1;
+    color: #e0e0e0;
     line-height: 1.6;
     margin-bottom: 2rem;
     text-align: justify;
 }
 
-/* Room Actions */
+/* Room Actions and Forms */
 .room-actions {
     text-align: center;
+    margin-bottom: 2rem;
 }
 
-.join-btn {
-    background-color: #1abc9c; /* Turquoise button */
-    color: #fff;
+.join-btn,
+input[type="submit"] {
+    background-color: #ff4b5c; /* Pink-red button */
+    color: #e0e0e0;
     border: none;
     padding: 12px 25px;
     font-size: 1.1rem;
@@ -93,12 +95,81 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
+    margin: 5px 0;
+    display: inline-block;
 }
 
-.join-btn:hover {
-    background-color: #16a085; /* Darker turquoise */
+.join-btn:hover,
+input[type="submit"]:hover {
+    background-color: #e03e4e; /* Darker pink-red */
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(26, 188, 156, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 75, 92, 0.4);
+}
+
+form {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ff4b5c;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]:focus {
+    border-color: #e03e4e;
+    box-shadow: 0 0 5px rgba(255, 75, 92, 0.5);
+}
+
+/* Room Contents */
+.room-contents {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+
+.room-imgs,
+.room-musics,
+.room-videos {
+    margin-bottom: 1.5rem;
+}
+
+.room-imgs img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #ff4b5c;
+    border-radius: 10px;
+    margin-right: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.room-imgs img:hover {
+    transform: scale(1.05);
+}
+
+audio,
+video {
+    display: block;
+    margin: 10px 0;
+    background: #1a1a2e;
+    border: 2px solid #ff4b5c;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+video {
+    width: 320px;
+    height: 240px;
 }
 
 /* Responsive Design */
@@ -121,9 +192,20 @@ body {
         font-size: 2rem;
     }
 
-    .join-btn {
+    .join-btn,
+    input[type="submit"] {
         padding: 10px 20px;
         font-size: 1rem;
+    }
+
+    .room-imgs img {
+        width: 150px;
+        height: 150px;
+    }
+
+    video {
+        width: 250px;
+        height: 188px; /* Maintain aspect ratio */
     }
 }
 
@@ -138,5 +220,21 @@ body {
 
     .room-description {
         font-size: 1rem;
+    }
+
+    .join-btn,
+    input[type="submit"] {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .room-imgs img {
+        width: 120px;
+        height: 120px;
+    }
+
+    video {
+        width: 200px;
+        height: 150px; /* Maintain aspect ratio */
     }
 }

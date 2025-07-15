@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import Room
+from .models import Room, Content
 from django.contrib import messages
 # Create your views here.
 
@@ -33,8 +33,20 @@ def create_room(request):
 
 
 def room_details(request, id=id):
+    room_data = Room.objects.get(id=id)
+
     if request.method == "GET":
-        room_data = Room.objects.get(id = id)
-        return render(request, 'roompage.html', {'room' : room_data})
+        room_cont = Content.objects.filter(room=room_data)
+        return render(request, 'roompage.html', {'room': room_data, 'cont': room_cont})
+
+    if request.method == "POST":
+        img = request.FILES.get('img')
+        vid = request.FILES.get('vid')
+        mus = request.FILES.get('mus')
+
+        #beccause room foreign key expects an object, not int
+        Content.objects.create(room=room_data, img=img, vid=vid, mus=mus)
+        return render(request, 'roompage.html', {'room': room_data})
+
 
 

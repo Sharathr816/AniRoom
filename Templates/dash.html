@@ -34,16 +34,17 @@
             <div class="anime-grid">
               {% for room in rooms %}
                 <a  href="{% url 'RoomPage' room.id %}" class="room-link">
-                <div class="anime-card">
-                  <img src="{{ room.image.url }}" alt="{{ room.title }}" class="anime-image">
-                  <h3>{{ room.title }}</h3>
-                  <p>{{ room.desc }}</p>
-                  <small>Uploaded by: {{ room.uploaded_by }}</small>
-                </div>
+                    <div class="anime-card">
+                      <img src="{{ room.image.url }}" alt="{{ room.title }}" class="anime-image">
+                      <h3>{{ room.title }}</h3>
+                      <p>{{ room.desc }}</p>
+                      <small>Uploaded by: {{ room.uploaded_by }}</small>
+                    </div>
+                </a>
               {% empty %}
                 <p>No rooms created yet 😿</p>
               {% endfor %}
-                </a>
+
             </div>
         </div>
 
