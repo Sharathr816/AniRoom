@@ -39,7 +39,7 @@ def room_details(request, id=id):
         room_cont = Content.objects.filter(room=room_data)
         return render(request, 'roompage.html', {'room': room_data, 'cont': room_cont})
 
-    if request.method == "POST":
+    if  request.user == Room.uploaded_by and request.method == "POST":
         img = request.FILES.get('img')
         vid = request.FILES.get('vid')
         mus = request.FILES.get('mus')

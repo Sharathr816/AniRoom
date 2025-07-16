@@ -15,6 +15,7 @@
         <p class="room-description">{{ room.desc }}</p>
 
         <div class="room-actions">
+            <!--Creator side-->
           {% if room.uploaded_by == request.user %}
             {% if not request.GET.showform %}
             <form method="get">
@@ -31,6 +32,7 @@
             </form>
             {% endif %}
 
+            <!--User side-->
             {% else %}
             <button class="join-btn">Join</button>
             {% endif %}
