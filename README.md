@@ -1,27 +1,29 @@
-# 🌸 AniRoom — The AI-Powered Community for Anime Enthusiasts
+# 🧿 AniRoom — The 2D-Only Social Chill Zone
 
-AniRoom is a smart, real-time social platform tailored for animation lovers. 
-Upload and explore contents (excluding live-action), discover hidden gems, chat live with others in anime-themed rooms, and manage your own profile hub.
+AniRoom is a WebSocket-powered social platform where people connect through 2D-themed content — anime, animation, or stylized art.  
+It’s your escape from reality: chill, share what’s inside, and find people who vibe with your world.
 
 ---
 
-## 🌟 Core Features
 
-- 🔐 **User Auth** — Register, log in, and manage your own rooms.
-- 📥 **Content Upload** — Upload animated images, descriptions, clips.
-- 🧠 **AI Tagging** — Hugging Face models auto-tag uploads based on anime genre/content.
-- 🔍 **Smart Search** — Find anime using title, tags, or descriptions.
-- 💬 **WebSocket-Powered Room Chat** — Real-time group chat inside animation-themed rooms.
-- 🙋‍♂️ **User Profiles** — Each user gets a customizable profile with their uploads, likes, and room activity.
+## 🔩 Core Features
+
+- **Real-Time Room Chat** – Powered by WebSockets for instant communication.
+- **User Profiles** – Create and customize your identity.
+- **Public Room Hosting** – Anyone can create a room around a theme.
+- **Media Sharing** – Share anime posters, trailers, and more.
+- **Room-Based Discussions** – Post, comment, and vibe around 2D content.
+- **Search & Discover Rooms** – Find active rooms by tags or titles.
+- **Authentication** – Register/login system using Django’s auth framework.
 
 ---
 
 ## 🧪 Under Development (Coming Soon)
 
 - 🧵 **Anime-Based Room Matching** — Automatically suggest or create chat rooms based on user animation preferences.
-- 🧠 **Recommendation Engine** — Suggest anime based on what users love.
-- 🎨 **Anime Playlists/Folders** — Save and share anime collections (SQL for now, NoSQL later if needed).
-- 🚫 **Live-Action Blocker** — Upload filter powered by custom-trained AI to avoid non-anime content.
+- 🧠 **Recommendation Engine** — Suggest animations based on what users love.
+- 🎨 **Playlists/Folders** — Save and share collections (SQL for now, NoSQL later if needed).
+- 🚫 **Live-Action Blocker** — Upload filter powered by custom-trained AI to avoid non-animated content(only images).
 
 ---
 
