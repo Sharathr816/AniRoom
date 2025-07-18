@@ -20,11 +20,16 @@ class Content(models.Model):
     mus = models.FileField(upload_to = 'room_musics/')
 
 
+
+
 class ChatMsg(models.Model):
     room = models.ForeignKey(Room, on_delete = models.CASCADE)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     chats = models.TextField()
     time_stamp = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.chats[:30]}"
 
 
 

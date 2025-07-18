@@ -1,0 +1,253 @@
+/* General Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e); /* Dark gradient */
+    color: #e0e0e0; /* Light gray text */
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+/* Chill Room Container */
+.Chill-room {
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Room Contents (Vertical Carousel) */
+.room-contents {
+    flex: 0 0 40vh; /* Fixed height for content section */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow-y: auto; /* Vertical scroll only */
+    padding: 1rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.room-contents::-webkit-scrollbar {
+    width: 8px;
+}
+
+.room-contents::-webkit-scrollbar-thumb {
+    background: #ff4b5c; /* Pink-red scrollbar */
+    border-radius: 10px;
+}
+
+.room-contents::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.room-imgs,
+.room-musics,
+.room-videos {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    overflow-x: auto; /* Horizontal scroll within sections */
+}
+
+.room-imgs img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #ff4b5c;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.room-imgs img:hover {
+    transform: scale(1.05);
+}
+
+audio,
+video {
+    display: block;
+    margin-right: 1rem;
+    background: #1a1a2e;
+    border: 2px solid #ff4b5c;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+video {
+    width: 320px;
+    height: 240px;
+}
+
+/* Chats Section */
+.chats {
+    flex: 1 1 auto; /* Takes remaining height */
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    overflow-y: auto; /* Vertical scroll for chat content */
+    padding: 1rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+.chats::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chats::-webkit-scrollbar-thumb {
+    background: #ff4b5c;
+    border-radius: 10px;
+}
+
+.chats::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.text-content-box {
+    background: rgba(255, 75, 92, 0.1); /* Light pink-red background */
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.text-content-box p:first-child {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+}
+
+.text-content-box p:last-child {
+    font-size: 0.8rem;
+    color: #b0b0b0;
+    text-align: right;
+}
+
+/* Chat Box (Fixed at Bottom) */
+.chat-box {
+    position: sticky;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 1rem;
+    border-top: 1px solid #ff4b5c;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chat-box form {
+    display: flex;
+    width: 100%;
+}
+
+.chat-box input[type="text"] {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid #ff4b5c;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.chat-box input[type="text"]:focus {
+    border-color: #e03e4e;
+    box-shadow: 0 0 5px rgba(255, 75, 92, 0.5);
+}
+
+.chat-box button[type="submit"] {
+    background-color: #ff4b5c;
+    color: #e0e0e0;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chat-box button[type="submit"]:hover {
+    background-color: #e03e4e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 75, 92, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .Chill-room {
+        padding: 10px;
+    }
+
+    .room-contents {
+        flex: 0 0 30vh; /* Reduce height on smaller screens */
+    }
+
+    .room-imgs img {
+        width: 150px;
+        height: 150px;
+    }
+
+    video {
+        width: 250px;
+        height: 188px; /* Maintain aspect ratio */
+    }
+
+    .text-content-box {
+        max-width: 85%;
+    }
+
+    .chat-box input[type="text"] {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .chat-box button[type="submit"] {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .room-contents {
+        flex: 0 0 25vh;
+    }
+
+    .room-imgs img {
+        width: 120px;
+        height: 120px;
+    }
+
+    video {
+        width: 200px;
+        height: 150px; /* Maintain aspect ratio */
+    }
+
+    .text-content-box {
+        max-width: 90%;
+    }
+
+    .chat-box {
+        padding: 0.5rem;
+    }
+
+    .chat-box input[type="text"] {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .chat-box button[type="submit"] {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}

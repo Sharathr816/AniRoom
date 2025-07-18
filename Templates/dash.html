@@ -30,7 +30,9 @@
     </div>
 
     <div class="recommends">
+
         <div class="Carousel" id="recents">
+
             <div class="anime-grid">
               {% for room in rooms %}
                 <a  href="{% url 'RoomPage' room.id %}" class="room-link">
@@ -44,41 +46,11 @@
               {% empty %}
                 <p>No rooms created yet 😿</p>
               {% endfor %}
-
             </div>
+
         </div>
 
-        <div class="Carousel" id="ani">
-            <div class="img-box">Animes1</div>
-            <div class="img-box">Animes2</div>
-            <div class="img-box">animes3</div>
-            <div class="img-box">animes4</div>
-            <div class="img-box">animes5</div>
-        </div>
-
-        <div class="Carousel" id="img">
-            <div class="img-box">images1</div>
-            <div class="img-box">images2</div>
-            <div class="img-box">images3</div>
-            <div class="img-box">images4</div>
-            <div class="img-box">images5</div>
-        </div>
-
-        <div class="Carousel" id="clip">
-            <div class="img-box">clips1</div>
-            <div class="img-box">clips2</div>
-            <div class="img-box">clips3</div>
-            <div class="img-box">Clips4</div>
-            <div class="img-box">Clips5</div>
-        </div>
     </div>
-
-
-<h2 style="text-align: center;">Uploaded Anime List</h2>
-
-
-
-
 </div>
 
 <script src="{% static 'JavaScripts/home.js' %}"></script>

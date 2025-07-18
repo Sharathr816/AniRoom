@@ -1,0 +1,66 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="Chill-room">
+    {% if cont %}
+          <div class="room-contents">
+            <div class="room-imgs">
+                {% for content in cont %}
+                    {% if content.img %}
+                        <img src="{{ content.img.url }}">
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+              <div class="room-musics">
+                {% for content in cont %}
+                    {% if content.mus %}
+                        <audio controls>
+                            <source src="{{ content.mus.url }}" type="audio/mpeg">
+                             Your browser does not support the audio element.
+                        </audio>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+              <div class="room-videos">
+                {% for content in cont %}
+                    {% if content.vid %}
+                        <video width="320" height="240" controls>
+                            <source src="{{ content.vid.url }}" type="video/mp4">
+                        </video>
+                    {% endif %}
+                {% endfor %}
+            </div>
+          </div>
+    {% endif %}
+
+    {% if Msg %}
+    <div class="chats">
+
+        {% for chat in Msg %}
+            <div class="text-content-box">
+                <p>{{ chat.chats }}</p>
+                <p>{{ chat.time_stamp }}</p>
+            </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="chat-box">
+            <form method="post" action="{% url 'ChillPage' room.id %}">
+                {% csrf_token %}
+                <input type="text" name="textContent"  placeholder="Type message...">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+
+    </div>
+
+
+</div>
+
+<link rel="stylesheet" href="{% static 'css/chatpage.css' %}">
+
+{% endblock %}
