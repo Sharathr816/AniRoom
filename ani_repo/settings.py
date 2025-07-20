@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
     'animes',
     'tailwind',#Django-Tailwind integration app.Knows where your Tailwind config lives
     'theme' #app name for styling(consists of tailwind)

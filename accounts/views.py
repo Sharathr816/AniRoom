@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
-
+from .models import profile
+from animes.models import Room #works as animes is mention in INSTALLEDAPPS
 from django.contrib.auth import authenticate, login as auth_login
 
 
@@ -31,6 +32,8 @@ def register(request):
             return render(request, 'register.html', {'mess': message});
 
         User.objects.create_user(username=user, email=email, password=passe)#row adding to the table
+        user_data = User.objects.get(username=user)
+        profile.objects.create(user=user_data)
         return redirect('dashboard')
 
     return render(request, 'register.html')
@@ -60,13 +63,9 @@ def login(request):
 
 
 
-# @login_required
-# def dashboard(request):
-#     if 'log_user' in request.session:
-#         return render(request, 'dash.html', {'name': request.session['log_user']})
-#     return redirect('login')
 
-
-
-def profile(request):
-    return render(request, 'prof.html')
+def Profile(request):
+    user_data = User.objects.get(username=request.user)
+    profile_data = profile.objects.get(user=user_data)
+    room_data = Room.objects.get(uploaded_by = user_data)
+    return render(request, 'prof.html', {'user':user_data, 'room':room_data, 'profile':profile_data})

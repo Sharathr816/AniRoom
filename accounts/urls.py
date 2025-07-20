@@ -24,5 +24,5 @@ urlpatterns = [
     path('', views.register, name = "register"),#name is used in form action
     path('dashboard/', dashboard, name = "dashboard"),
     path('login/', views.login, name = "login"),#Login in href
-    path('Profile', views.profile, name = "profy")
+    path('Profile', views.Profile, name = "profy")
 ]

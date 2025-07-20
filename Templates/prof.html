@@ -2,6 +2,10 @@
 
 {% block content %}
 
-<h2>Profileee</h2>
-
+<h2>{{ user }}</h2>
+<p>{{ user.username }}</p>
+<p>{{ user.email }}</p>
+<p>{{ profile.bio }}</p>
+<p>{{ room.title }}</p>
+<img src="{{ room.image.url }}" alt="{{ room.title }}" class="anime-image">
 {% endblock %}
