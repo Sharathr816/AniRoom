@@ -30,6 +30,17 @@ class ChatMsg(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.chats[:30]}"
 
+class JoinedRooms(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    room = models.ForeignKey(Room, on_delete = models.CASCADE)
+
+    class Meta: #to make sure the (user, room) pairs are unique
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'room'], name='unique_user_room')
+        ]
+
+    def __str__(self):
+        return self.user.username
 
 
 

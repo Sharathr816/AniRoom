@@ -8,4 +8,10 @@
 <p>{{ profile.bio }}</p>
 <p>{{ room.title }}</p>
 <img src="{{ room.image.url }}" alt="{{ room.title }}" class="anime-image">
+
+{% for space in joined %}
+<p>{{ space.room.title }}</p>
+<img src="{{ space.room.image.url }}" alt="{{ space.room.title }}" class="anime-image">
+{% endfor %}
+
 {% endblock %}

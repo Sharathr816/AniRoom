@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from .models import profile
-from animes.models import Room #works as animes is mention in INSTALLEDAPPS
+from animes.models import Room, JoinedRooms #works as animes is mention in INSTALLEDAPPS
 from django.contrib.auth import authenticate, login as auth_login
 
 
@@ -68,4 +68,5 @@ def Profile(request):
     user_data = User.objects.get(username=request.user)
     profile_data = profile.objects.get(user=user_data)
     room_data = Room.objects.get(uploaded_by = user_data)
-    return render(request, 'prof.html', {'user':user_data, 'room':room_data, 'profile':profile_data})
+    joined_data = JoinedRooms.objects.filter(user = user_data)
+    return render(request, 'prof.html', {'user':user_data, 'room':room_data, 'profile':profile_data, 'joined':joined_data})

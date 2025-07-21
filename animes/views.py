@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import Room, Content, ChatMsg
+from .models import Room, Content, ChatMsg, JoinedRooms
 from django.contrib import messages
+from django.contrib.auth.models import User
 # Create your views here.
 
 @login_required #default login url is "login/", should have default in urls.py or change in settings.py LOGIN_URL = /Login/
@@ -57,6 +58,8 @@ def chillPage(request, id=id):
 
     #Authenticate the user here
     if request.GET.get('ShowPage'):
+        user_data = User.objects.get(username = request.user)
+        JoinedRooms.objects.create(user = user_data, room = room_data)
         return render(request, 'ChatPage.html', {'room': room_data, 'cont':room_cont, 'Msg': messages})
 
     elif request.POST.get('textContent'):
