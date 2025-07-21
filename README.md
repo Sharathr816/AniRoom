@@ -47,7 +47,7 @@ It’s your escape from reality: chill, share what’s inside, and find people w
 | Room Chat (WebSocket) | 🛠️ In Progress |
 | AI Tagging | 🛠️ Next |
 | Smart Search | 🔜 Soon |
-| Profiles | 🔜 Soon |
+| Profiles | 🛠️ In Progress  |
 
 ---
 
