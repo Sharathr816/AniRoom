@@ -45,7 +45,7 @@ It’s your escape from reality: chill, share what’s inside, and find people w
 | User Auth | ✅ Done |
 | Upload Anime | ✅ Done |
 | Room Chat (WebSocket) | 🛠️ In Progress |
-| AI Tagging | 🛠️ Next |
+| AI Tagging | 🔜 Soon |
 | Smart Search | 🔜 Soon |
 | Profiles | 🛠️ In Progress  |
 

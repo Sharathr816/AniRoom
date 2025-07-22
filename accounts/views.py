@@ -67,6 +67,6 @@ def login(request):
 def Profile(request):
     user_data = User.objects.get(username=request.user)
     profile_data = profile.objects.get(user=user_data)
-    room_data = Room.objects.get(uploaded_by = user_data)
+    room_data = Room.objects.filter(uploaded_by = user_data)
     joined_data = JoinedRooms.objects.filter(user = user_data)
     return render(request, 'prof.html', {'user':user_data, 'room':room_data, 'profile':profile_data, 'joined':joined_data})

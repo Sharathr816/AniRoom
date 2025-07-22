@@ -1,0 +1,289 @@
+/* General Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e); /* Dark gradient */
+    color: #e0e0e0; /* Light gray text */
+    min-height: 100vh;
+    padding: 40px;
+}
+
+/* User Profile Mini Section */
+.user-profile-mini {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    padding: 25px;
+    transition: transform 0.3s ease;
+}
+
+.user-profile-mini:hover {
+    transform: translateY(-5px);
+}
+
+.user-profile-mini img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #ff4b5c; /* Pink-red border */
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.user-profile-mini img:hover {
+    transform: scale(1.1);
+}
+
+.user-profile-mini h3 {
+    font-size: 2.2rem;
+    color: #ff4b5c; /* Pink-red */
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(255, 75, 92, 0.6);
+}
+
+.bio-box {
+    padding: 1.2rem;
+    background: rgba(255, 75, 92, 0.15); /* Softer pink-red background */
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.bio {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.user-profile-mini form {
+    display: inline-block;
+}
+
+.user-profile-mini button {
+    background-color: #ff4b5c;
+    color: #e0e0e0;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-profile-mini button:hover {
+    background-color: #e03e4e; /* Darker pink-red */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 75, 92, 0.5);
+}
+
+/* Room Carousels */
+.joined-room-carousel,
+.created-room-carousel {
+    max-width: 1000px;
+    margin: 0 auto 3rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow-x: auto; /* Single horizontal slider */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.joined-room-carousel::-webkit-scrollbar,
+.created-room-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.joined-room-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.created-room-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.room-link {
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 0; /* Removed to align with slider */
+}
+
+.anime-card {
+    flex: 0 0 250px; /* Fixed width based on previous design */
+    height: 350px; /* Assumed height from previous context, adjust if image specifies */
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(255, 75, 92, 0.4);
+}
+
+.anime-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.anime-card h3 {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    color: #ff4b5c;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.anime-card p {
+    padding: 0 1rem 0.5rem;
+    font-size: 0.9rem;
+    color: #b0b0b0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.anime-card small {
+    display: block;
+    padding: 0 1rem 1rem;
+    font-size: 0.8rem;
+    color: #888;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Navigation Arrows */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #ff4b5c;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-nav:hover {
+    background: rgba(255, 75, 92, 0.7);
+}
+
+.carousel-nav.prev {
+    left: 10px;
+}
+
+.carousel-nav.next {
+    right: 10px;
+}
+
+.carousel-nav::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: solid #ff4b5c;
+    border-width: 0 2px 2px 0;
+}
+
+.carousel-nav.prev::before {
+    transform: rotate(135deg);
+}
+
+.carousel-nav.next::before {
+    transform: rotate(-45deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-profile-mini {
+        padding: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .user-profile-mini img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .user-profile-mini h3 {
+        font-size: 1.8rem;
+    }
+
+    .anime-card {
+        flex: 0 0 200px;
+        height: 280px;
+    }
+
+    .anime-image {
+        height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-profile-mini {
+        padding: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .user-profile-mini img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .user-profile-mini h3 {
+        font-size: 1.5rem;
+    }
+
+    .bio {
+        font-size: 1rem;
+    }
+
+    .anime-card {
+        flex: 0 0 150px;
+        height: 210px;
+    }
+
+    .anime-image {
+        height: 120px;
+    }
+
+    .anime-card h3 {
+        font-size: 1rem;
+    }
+
+    .anime-card p {
+        font-size: 0.8rem;
+    }
+}

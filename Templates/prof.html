@@ -2,16 +2,48 @@
 
 {% block content %}
 
-<h2>{{ user }}</h2>
-<p>{{ user.username }}</p>
-<p>{{ user.email }}</p>
-<p>{{ profile.bio }}</p>
-<p>{{ room.title }}</p>
-<img src="{{ room.image.url }}" alt="{{ room.title }}" class="anime-image">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/prof.css' %}">
 
-{% for space in joined %}
-<p>{{ space.room.title }}</p>
-<img src="{{ space.room.image.url }}" alt="{{ space.room.title }}" class="anime-image">
-{% endfor %}
+<div>
+    <div class="user-profile-mini">
+    <img src="{{ profile.pic.url }}" alt="Pic">
+    <h3>{{ user.username }}</h3>
+    <div class="bio-box">
+        <p class="bio">{{ profile.bio }}</p>
+    </div>
+
+    <form method="#">
+        <button>Edit</button>
+    </form>
+</div>
+
+<div class="joined-room-carousel">
+    {% for space in joined %}
+    <a  href="{% url 'ChillPage' space.room.id %}" class="room-link">
+        <div class="anime-card">
+            <img src="{{ space.room.image.url }}" alt="{{ space.room.title }}" class="anime-image">
+            <h3>{{ space.room.title }}</h3>
+            <p>{{ space.room.desc }}</p>
+            <small>Uploaded by: {{ space.room.uploaded_by }}</small>
+
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<div class="created-room-carousel">
+    {% for space in room %}
+     <a  href="{% url 'RoomPage' space.id %}" class="room-link">
+         <div class="anime-card">
+             <img src="{{ space.image.url }}" alt="{{ space.title }}" class="anime-image">
+             <h3>{{ space.title }}</h3>
+             <p>{{ space.desc }}</p>
+         </div>
+    </a>
+    {% endfor %}
+</div>
+</div>
+
 
 {% endblock %}
