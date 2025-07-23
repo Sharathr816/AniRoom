@@ -62,6 +62,7 @@ def chillPage(request, id=id):
         JoinedRooms.objects.create(user = user_data, room = room_data)
         return render(request, 'ChatPage.html', {'room': room_data, 'cont':room_cont, 'Msg': messages})
 
+    #saving the chat messages
     elif request.POST.get('textContent'):
         texts = request.POST.get('textContent')
         ChatMsg.objects.create(room=room_data, user= request.user, chats=texts)
