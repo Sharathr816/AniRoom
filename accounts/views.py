@@ -10,9 +10,19 @@ from animes.models import Room, JoinedRooms #works as animes is mention in INSTA
 from django.contrib.auth import authenticate, login as auth_login
 
 
+def authorize(request, username, password):
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        # Proper login that Django recognizes
+        auth_login(request, user)
+        # Redirect to where user wanted to go (like /animesdashboard/)
+        next_url = request.GET.get('next')
+        return redirect(next_url) if next_url else redirect('dashboard')
+
+    return render(request, 'login.html', {"mess":"Invalid credential"})
+
 
 # Create your views here.
-message = ""
 def register(request):
     message = ""
     if(request.method == "POST"):
@@ -23,18 +33,20 @@ def register(request):
             passe = request.POST["ppp"]
         else:
             return  render(request, 'register.html', {'mess':"password mismatch"})
+
+        #check if username is taken(email is new one
+        if  User.objects.filter(username=user).exists():
+            return render(request, 'register.html', {'mess': "username taken"});
         #check if user exists with an email
         if User.objects.filter(email=email).exists():
             return redirect('login')
-        #check if username is taken(email is new one
-        if  User.objects.filter(username=user).exists():
-            message = "username taken"
-            return render(request, 'register.html', {'mess': message});
 
         User.objects.create_user(username=user, email=email, password=passe)#row adding to the table
+        #authorize the user
         user_data = User.objects.get(username=user)
         profile.objects.create(user=user_data)
-        return redirect('dashboard')
+        #for register authorize is always true
+        return authorize(request, user, passe)
 
     return render(request, 'register.html')
 
@@ -47,17 +59,7 @@ def login(request):
         username = request.POST['user']
         password = request.POST['pass']
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            #Proper login that Django recognizes
-            auth_login(request, user)
-
-            # Redirect to where user wanted to go (like /animesdashboard/)
-            next_url = request.GET.get('next')
-            return redirect(next_url) if next_url else redirect('dashboard')
-
-        else:
-            return render(request, 'login.html', {'mess': "Invalid"})
+        return authorize(request, username, password)
 
     return render(request, 'login.html')
 
