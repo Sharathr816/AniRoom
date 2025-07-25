@@ -71,4 +71,22 @@ def Profile(request):
     profile_data = profile.objects.get(user=user_data)
     room_data = Room.objects.filter(uploaded_by = user_data)
     joined_data = JoinedRooms.objects.filter(user = user_data)
+
+    if request.GET.get('back'):
+       return redirect('profy')
+
+    if request.method == "POST":
+        pic = request.FILES.get("pic")
+        user = request.POST.get("Username")
+        bio = request.POST.get("bio")
+        if user:
+            user_data.username = user
+        if bio:
+            profile_data.bio = bio
+        if pic:
+            profile_data.pic = pic #Django automatically stores in media
+        profile_data.save()
+        user_data.save()
+        return redirect('profy')
+
     return render(request, 'prof.html', {'user':user_data, 'room':room_data, 'profile':profile_data, 'joined':joined_data})

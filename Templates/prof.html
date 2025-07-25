@@ -13,9 +13,29 @@
         <p class="bio">{{ profile.bio }}</p>
     </div>
 
-    <form method="#">
-        <button>Edit</button>
-    </form>
+        <div class="edit-button">
+            {% if not request.GET.EditProf %}
+            <form method="get">
+                <input type="hidden" name="EditProf" value="1">
+                <button class="join-btn">Edit</button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'profy' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="pic" >
+                <br>
+                <input type="text" name="Username" placeholder="username">
+                <br>
+                <textarea id="message" name="bio" rows="5" cols="50" placeholder="Write bio..."></textarea>
+                <br>
+                <button class="join-btn">Change</button>
+            </form>
+            <form method="get">
+                    <input type="hidden" name="back" value="1">
+                    <button class="join-btn">Back</button>
+            </form>
+            {% endif %}
+        </div>
 </div>
 
 <div class="joined-room-carousel">
