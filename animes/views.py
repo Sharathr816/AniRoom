@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Room, Content, ChatMsg, JoinedRooms
-from django.contrib import messages
+from django.contrib import messages #to store temparory messages like success, error, warning in queue
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -40,20 +40,38 @@ def room_details(request, id=id):
     if JoinedRooms.objects.filter(user=request.user, room=room_data).exists():#use filter to handle "no object found error"
         return redirect('ChillPage', id=id)
 
-    if  request.user == room_data.uploaded_by and request.method == "POST":
-        files = request.FILES.getlist("files")
+    #authenticate user
+    if request.user == room_data.uploaded_by:
+        #Room details update
+        if request.method == "POST" and request.POST.get("Roomedit"):
+            img = request.FILES.get("photo")
+            title = request.POST.get("title")
+            desc = request.POST.get("desc")
+            if title:
+                room_data.title = title
+            if desc:
+                room_data.desc = desc
+            if img:
+                room_data.image = img
+            room_data.save()
+            return redirect('RoomPage', id=id)
 
-        for file in files:
-            if file.content_type.startswith('image/'):
-                Content.objects.create(room=room_data, img=file)
-            elif file.content_type.startswith('video/'):
-                Content.objects.create(room=room_data, vid=file)
-            elif file.content_type.startswith('audio/'):
-                Content.objects.create(room=room_data, mus=file)
-            else:
-                continue
-
-        return redirect('RoomPage', id=id)
+        #content upload logic
+        if  request.POST.get("RoomUp") and request.method == "POST":
+            files = request.FILES.getlist("files")
+            for file in files:
+                if file.size > 50*1024*1024:
+                    messages.error(request, "File size is greater")
+                    return redirect('RoomPage', id=id)
+                if file.content_type.startswith('image/'):
+                    Content.objects.create(room=room_data, img=file)
+                elif file.content_type.startswith('video/'):
+                    Content.objects.create(room=room_data, vid=file)
+                elif file.content_type.startswith('audio/'):
+                    Content.objects.create(room=room_data, mus=file)
+                else:
+                    continue
+            return redirect('RoomPage', id=id)
 
     return render(request, 'roompage.html', {'room': room_data})
 

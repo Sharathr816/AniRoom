@@ -30,6 +30,7 @@
                     {% if content.vid %}
                         <video width="320" height="240" controls>
                             <source src="{{ content.vid.url }}" type="video/mp4">
+                            <source src="{{ content.vid.url }}" type="video/MKV">
                         </video>
                     {% endif %}
                 {% endfor %}

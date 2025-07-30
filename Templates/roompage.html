@@ -18,24 +18,49 @@
             <!--Creator side-->
           {% if room.uploaded_by == request.user %}
             {% if not request.GET.showform %}
-            <form method="get">
-                <input type="hidden" name="showform" value="1">
-                <button class="join-btn">Manage</button>
-            </form>
-            <form method="get" action="{% url 'ChillPage' room.id %}">
-                <button class="join-btn">Enter</button>
-            </form>
+            <div class="initial-manage">
+                    <form class="manage-room" method="get">
+                    <input type="hidden" name="showform" value="1">
+                    <button class="join-btn">Manage</button>
+                </form>
+                <form class="enter-room" method="get" action="{% url 'ChillPage' room.id %}">
+                    <button class="join-btn">Enter</button>
+                </form>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == "error" %}
+                            <p>{{ message }}</p>
+                        {%endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
             {% else %}
-            <form method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
+            <div class="after-manage">
+                <form class="upload-content" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data" >
                 {% csrf_token %}
-                <input type="file" accept="image/*, video/*, audio/*" name="files" class="cont-up" multiple>
+                    <input type="hidden" name="RoomUp" value="1">
+                <input class="cont-up" type="file" accept="image/*, video/*, .mkv, .webm, audio/*" name="files"  multiple>
                 <button class="join-btn">upload</button>
             </form>
+
+            <form class="Room-edit" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="Roomedit" value="1">
+                <input type="text" name="title" placeholder="Enter title...">
+                <br>
+                <textarea id="message2" name="desc" rows="5" cols="50" placeholder="Write description..."></textarea>
+                <br>
+                <input class="cont-up" type="file" name="photo" accept="image/*">
+                <br>
+                <button class="join-btn">Change</button>
+            </form>
+            </div>
             {% endif %}
 
             <!--User side-->
             {% else %}
-            <form method="get" action="{% url 'ChillPage' room.id %}">
+            <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
                 <input type="hidden" name="ShowPage" value="{{ room.id }}">
                 <button class="join-btn">Join</button>
             </form>
