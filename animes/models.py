@@ -17,8 +17,9 @@ class Room(models.Model):
 class Content(models.Model):
     room = models.ForeignKey(Room, on_delete = models.CASCADE)
     img = models.ImageField(upload_to = 'room_imgs/')
-    vid = models.FileField(upload_to = 'room_vids_musics/') #check does it allow multi file upload at once
+    vid = models.FileField(upload_to = 'room_vids/') #check does it allow multi file upload at once
     mus = models.FileField(upload_to = 'room_musics/')
+    time_stamp = models.DateTimeField(auto_now_add=True)
 
 
 class ChatMsg(models.Model):

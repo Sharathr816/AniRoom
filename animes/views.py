@@ -35,20 +35,27 @@ def create_room(request):
 
 def room_details(request, id=id):
     room_data = Room.objects.get(id=id)
-    room_cont = Content.objects.filter(room=room_data)
 
-    if request.method == "GET":
-        return render(request, 'roompage.html', {'room': room_data, 'cont': room_cont})
+    #if already joined room(To prevent integrity error in JoinedRooms)
+    if JoinedRooms.objects.filter(user=request.user, room=room_data).exists():#use filter to handle "no object found error"
+        return redirect('ChillPage', id=id)
 
-    elif  request.user == Room.uploaded_by and request.method == "POST":
-        img = request.FILES.get('img')
-        vid = request.FILES.get('vid')
-        mus = request.FILES.get('mus')
-        #because room foreign key expects an object, not int
-        Content.objects.create(room=room_data, img=img, vid=vid, mus=mus)
-        return render(request, 'roompage.html', {'room': room_data})
+    if  request.user == room_data.uploaded_by and request.method == "POST":
+        files = request.FILES.getlist("files")
 
-    return render(request, 'roompage.html', {'room': room_data, 'cont': room_cont})
+        for file in files:
+            if file.content_type.startswith('image/'):
+                Content.objects.create(room=room_data, img=file)
+            elif file.content_type.startswith('video/'):
+                Content.objects.create(room=room_data, vid=file)
+            elif file.content_type.startswith('audio/'):
+                Content.objects.create(room=room_data, mus=file)
+            else:
+                continue
+
+        return redirect('RoomPage', id=id)
+
+    return render(request, 'roompage.html', {'room': room_data})
 
 
 def chillPage(request, id=id):

@@ -22,12 +22,13 @@
                 <input type="hidden" name="showform" value="1">
                 <button class="join-btn">Manage</button>
             </form>
+            <form method="get" action="{% url 'ChillPage' room.id %}">
+                <button class="join-btn">Enter</button>
+            </form>
             {% else %}
             <form method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" name="img" >
-                <input type="file" name="vid" >
-                <input type="file" name="mus" >
+                <input type="file" accept="image/*, video/*, audio/*" name="files" class="cont-up" multiple>
                 <button class="join-btn">upload</button>
             </form>
             {% endif %}
