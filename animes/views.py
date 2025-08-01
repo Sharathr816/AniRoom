@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Room, Content, ChatMsg, JoinedRooms
 from django.contrib import messages #to store temparory messages like success, error, warning in queue
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 # Create your views here.
 
 @login_required #default login url is "login/", should have default in urls.py or change in settings.py LOGIN_URL = /Login/
@@ -34,9 +35,12 @@ def create_room(request):
 
 
 def room_details(request, id=id):
-    room_data = Room.objects.get(id=id)
+    try:
+        room_data = Room.objects.get(id=id)
+    except Room.DoesNotExist:
+        return HttpResponse('room dosent exists')
 
-    #if already joined room(To prevent integrity error in JoinedRooms)
+    #if already joined room (To prevent integrity error in JoinedRooms)
     if JoinedRooms.objects.filter(user=request.user, room=room_data).exists():#use filter to handle "no object found error"
         return redirect('ChillPage', id=id)
 
@@ -55,6 +59,11 @@ def room_details(request, id=id):
                 room_data.image = img
             room_data.save()
             return redirect('RoomPage', id=id)
+
+        #room deletion
+        if request.GET.get("delete"):
+            room_data.delete()
+            return redirect('profy')
 
         #content upload logic
         if  request.POST.get("RoomUp") and request.method == "POST":

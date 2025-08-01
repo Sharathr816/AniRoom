@@ -5,65 +5,81 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/prof.css' %}">
 
-<div>
-    <div class="user-profile-mini">
-    <img src="{{ profile.pic.url }}" alt="Pic">
-    <h3>{{ user.username }}</h3>
-    <div class="bio-box">
-        <p class="bio">{{ profile.bio }}</p>
+{% if request.GET.poppy %}
+                 <div class="popup-container">
+                     <div class="popup">
+                         <h2>Delete?</h2>
+                        <p>Are you sure you want to delete the room {{ one_room.title }} permanently</p>
+                        <form method="get" action="{% url 'RoomPage' one_room.id %}">
+                            <input type="hidden" name="delete" value="1">
+                            <button class="join-btn">Delete</button>
+                        </form>
+                    </div>
+                 </div>
+
+{% else %}
+    <div>
+        <div class="user-profile-mini">
+        <img src="{{ profile.pic.url }}" alt="Pic">
+        <h3>{{ user.username }}</h3>
+        <div class="bio-box">
+            <p class="bio">{{ profile.bio }}</p>
+        </div>
+
+            <div class="edit-button">
+                {% if not request.GET.EditProf %}<!-- Line only works when we call the html using render, dosen't work for redirect-->
+                <form method="get">
+                    <input type="hidden" name="EditProf" value="1">
+                    <button class="join-btn">Edit</button>
+                </form>
+                {% else %}
+                <form method="post" action="{% url 'profy' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="pic" >
+                    <br>
+                    <input type="text" name="Username" placeholder="username">
+                    <br>
+                    <textarea id="message" name="bio" rows="5" cols="50" placeholder="Write bio..."></textarea>
+                    <br>
+                    <button class="join-btn">Change</button>
+                </form>
+                <form method="get">
+                        <input type="hidden" name="back" value="1">
+                        <button class="join-btn">Back</button>
+                </form>
+                {% endif %}
+            </div>
     </div>
 
-        <div class="edit-button">
-            {% if not request.GET.EditProf %}
-            <form method="get">
-                <input type="hidden" name="EditProf" value="1">
-                <button class="join-btn">Edit</button>
-            </form>
-            {% else %}
-            <form method="post" action="{% url 'profy' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="pic" >
-                <br>
-                <input type="text" name="Username" placeholder="username">
-                <br>
-                <textarea id="message" name="bio" rows="5" cols="50" placeholder="Write bio..."></textarea>
-                <br>
-                <button class="join-btn">Change</button>
-            </form>
-            <form method="get">
-                    <input type="hidden" name="back" value="1">
-                    <button class="join-btn">Back</button>
-            </form>
-            {% endif %}
-        </div>
-</div>
+    <div class="joined-room-carousel">
+        {% for space in joined %}
+        <a  href="{% url 'ChillPage' space.room.id %}" class="room-link">
+            <div class="anime-card">
+                <img src="{{ space.room.image.url }}" alt="{{ space.room.title }}" class="anime-image">
+                <h3>{{ space.room.title }}</h3>
+                <p>{{ space.room.desc }}</p>
+                <small>Uploaded by: {{ space.room.uploaded_by }}</small>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
 
-<div class="joined-room-carousel">
-    {% for space in joined %}
-    <a  href="{% url 'ChillPage' space.room.id %}" class="room-link">
-        <div class="anime-card">
-            <img src="{{ space.room.image.url }}" alt="{{ space.room.title }}" class="anime-image">
-            <h3>{{ space.room.title }}</h3>
-            <p>{{ space.room.desc }}</p>
-            <small>Uploaded by: {{ space.room.uploaded_by }}</small>
-
-        </div>
-    </a>
-    {% endfor %}
-</div>
-
-<div class="created-room-carousel">
-    {% for space in room %}
-     <a  href="{% url 'RoomPage' space.id %}" class="room-link">
-         <div class="anime-card">
-             <img src="{{ space.image.url }}" alt="{{ space.title }}" class="anime-image">
-             <h3>{{ space.title }}</h3>
-             <p>{{ space.desc }}</p>
-         </div>
-    </a>
-    {% endfor %}
-</div>
-</div>
-
+    <div class="created-room-carousel">
+        {% for space in room %}
+         <a  href="{% url 'RoomPage' space.id %}" class="room-link">
+             <div class="anime-card">
+                 <img src="{{ space.image.url }}" alt="{{ space.title }}" class="anime-image">
+                 <h3>{{ space.title }}</h3>
+                 <p>{{ space.desc }}</p>
+                 <form method="get" action="{% url 'profy' %}">
+                     <input type="hidden" name="poppy" value="{{ space.id }}">
+                     <button class="join-btn">Delete</button>
+                 </form>
+             </div>
+        </a>
+        {% endfor %}
+    </div>
+    </div>
+{% endif %}
 
 {% endblock %}

@@ -8,7 +8,13 @@
 <div class="form-box">
 
     <h2 class="center">Login</h2>
-    <p class="center">{{mess}}</p>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <p class="center">{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <p class="center">Enter username and password</p>
     <form method="POST" action="{% url 'login' %}" class="center">
         {% csrf_token %}

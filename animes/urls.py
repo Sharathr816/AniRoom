@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from accounts.views import Profile
 
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name = "dashboard"),
     path('create_room', views.create_room, name = "UpPage"),
     path('room/<int:id>/', views.room_details, name = 'RoomPage'),
-    path('Chill/<int:id>/', views.chillPage, name = 'ChillPage')
+    path('Chill/<int:id>/', views.chillPage, name = 'ChillPage'),
+    path('profile/', Profile, name='profy')
 
 ]
