@@ -94,7 +94,8 @@ def room_details(request, id=id):
 def chillPage(request, id=id):
     room_data = Room.objects.get(id=id)
     room_cont = Content.objects.filter(room=room_data)
-    messages = ChatMsg.objects.filter(room=room_data)#fetch latest 50 or 100 messages
+    #usgae of django pagination
+    messages = ChatMsg.objects.filter(room=room_data).order_by('-time_stamp')[:50:-1]#order by gives in decreasing order of timestamp
 
     #Authenticate the user here
     if request.GET.get('join-room'):
