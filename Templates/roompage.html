@@ -61,7 +61,7 @@
             <!--User side-->
             {% else %}
             <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
-                <input type="hidden" name="ShowPage" value="{{ room.id }}">
+                <input type="hidden" name="join-room" value="{{ room.id }}">
                 <button class="join-btn">Join</button>
             </form>
             {% endif %}

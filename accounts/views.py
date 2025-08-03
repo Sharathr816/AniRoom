@@ -71,8 +71,12 @@ def Profile(request):
 
     # For pop up message
     if request.GET.get('poppy'):
-        del_room = Room.objects.get(id=request.GET.get('poppy'))
-        return render(request, 'prof.html', {'one_room':del_room})
+        room_id = request.GET.get('poppy')
+        room_act = Room.objects.get(id=room_id)
+        message = "Delete"
+        if not room_act.uploaded_by == request.user:
+            message = "Leave"
+        return render(request, 'prof.html', {'one_room':room_act, 'mess': message})
 
     #Editing user profile
     if request.method == "POST":

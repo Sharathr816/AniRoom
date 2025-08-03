@@ -37,11 +37,16 @@ def create_room(request):
 def room_details(request, id=id):
     try:
         room_data = Room.objects.get(id=id)
+        joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data)# None if the user is the uploader
     except Room.DoesNotExist:
         return HttpResponse('room dosent exists')
 
+    if joined_room.exists() and request.GET.get("Leave"):
+        joined_room.delete()
+        return redirect('profy')
+
     #if already joined room (To prevent integrity error in JoinedRooms)
-    if JoinedRooms.objects.filter(user=request.user, room=room_data).exists():#use filter to handle "no object found error"
+    if joined_room.exists():#use filter to handle "no object found error"
         return redirect('ChillPage', id=id)
 
     #authenticate user
@@ -64,6 +69,7 @@ def room_details(request, id=id):
         if request.GET.get("delete"):
             room_data.delete()
             return redirect('profy')
+
 
         #content upload logic
         if  request.POST.get("RoomUp") and request.method == "POST":
@@ -91,7 +97,7 @@ def chillPage(request, id=id):
     messages = ChatMsg.objects.filter(room=room_data)#fetch latest 50 or 100 messages
 
     #Authenticate the user here
-    if request.GET.get('ShowPage'):
+    if request.GET.get('join-room'):
         user_data = User.objects.get(username = request.user)
         JoinedRooms.objects.create(user = user_data, room = room_data)
         return render(request, 'ChatPage.html', {'room': room_data, 'cont':room_cont, 'Msg': messages})
@@ -103,5 +109,9 @@ def chillPage(request, id=id):
         #to prevent the "Form resubmission"
         return redirect('ChillPage', id=id)
 
+    # user can enter directly only if he has joined earlier
+    if not JoinedRooms.objects.filter(user = request.user, room = room_data):
+        return redirect('RoomPage', id=id)
     return render(request, 'ChatPage.html', {'room': room_data, 'cont': room_cont, 'Msg': messages})
+
 
