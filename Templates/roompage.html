@@ -36,34 +36,38 @@
             </div>
 
             {% else %}
-            <div class="after-manage">
-                <form class="upload-content" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data" >
-                {% csrf_token %}
-                    <input type="hidden" name="RoomUp" value="1">
-                <input class="cont-up" type="file" accept="image/*, video/*, .mkv, .webm, audio/*" name="files"  multiple>
-                <button class="join-btn">upload</button>
-            </form>
+                {% if request.user.is_authenticated %}
+                <div class="after-manage">
+                    <form class="upload-content" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                        <input type="hidden" name="RoomUp" value="1">
+                    <input class="cont-up" type="file" accept="image/*, video/*, .mkv, .webm, audio/*" name="files"  multiple>
+                    <button class="join-btn">upload</button>
+                </form>
 
-            <form class="Room-edit" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="hidden" name="Roomedit" value="1">
-                <input type="text" name="title" placeholder="Enter title...">
-                <br>
-                <textarea id="message2" name="desc" rows="5" cols="50" placeholder="Write description..."></textarea>
-                <br>
-                <input class="cont-up" type="file" name="photo" accept="image/*">
-                <br>
-                <button class="join-btn">Change</button>
-            </form>
-            </div>
+                <form class="Room-edit" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="Roomedit" value="1">
+                    <input type="text" name="title" placeholder="Enter title...">
+                    <br>
+                    <textarea id="message2" name="desc" rows="5" cols="50" placeholder="Write description..."></textarea>
+                    <br>
+                    <input class="cont-up" type="file" name="photo" accept="image/*">
+                    <br>
+                    <button class="join-btn">Change</button>
+                </form>
+                </div>
+                {% endif %}
             {% endif %}
 
             <!--User side-->
             {% else %}
-            <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
-                <input type="hidden" name="join-room" value="{{ room.id }}">
-                <button class="join-btn">Join</button>
-            </form>
+                {% if request.user.is_authenticated %}
+                <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
+                    <input type="hidden" name="join-room" value="{{ room.id }}">
+                    <button class="join-btn">Join</button>
+                </form>
+                {% endif %}
             {% endif %}
         </div>
 

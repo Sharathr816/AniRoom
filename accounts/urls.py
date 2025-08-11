@@ -21,9 +21,9 @@ from animes.views import dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.register, name = "register"),#name is used in form action
+    path('', dashboard, name = "dashboard"),
+    path('Register/', views.register, name = "register"),#name is used in form action
     path('authorizing', views.authorize, name = "auth"),
-    path('dashboard/', dashboard, name = "dashboard"),
     path('login/', views.login, name = "login"),#Login in href
     path('Profile', views.Profile, name = "profy")
 ]

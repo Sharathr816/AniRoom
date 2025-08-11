@@ -11,9 +11,13 @@
     <div class="left" ><li><a class="link-shit" href="#" id="le">Menu</a></li></div>
     <div class="center"><h1>AniRoom</h1></div>
     <div class="right">
-        <li class="rig"><a class="link-shit" href="{% url 'profy' %}" >Profile</a></li>
         <li class="rig"><a class="link-shit" href="#" id="search-link">Search</a></li>
-        <li class="rig"><a class="link-shit" href="{% url 'UpPage' %}" >Rooms</a></li>
+        {% if not request.user.is_authenticated %}
+            <li class="rig"><a class="link-shit" href="{% url 'login' %}" >Login/</a><a class="link-shit" href="{% url 'register' %}" >Register</a></li>
+        {% else %}
+            <li class="rig"><a class="link-shit" href="{% url 'profy' %}" >Profile</a></li>
+            <li class="rig"><a class="link-shit" href="{% url 'UpPage' %}" >Rooms</a></li>
+        {% endif %}
     </div>
 </div>
 

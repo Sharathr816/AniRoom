@@ -1,5 +1,6 @@
 from http.client import HTTPResponse
 
+
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -9,6 +10,7 @@ from django.contrib import messages
 from .models import profile
 from animes.models import Room, JoinedRooms #works as animes is mention in INSTALLEDAPPS
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout
 
 
 def authorize(request, username, password):
@@ -17,8 +19,8 @@ def authorize(request, username, password):
         # Proper login that Django recognizes
         auth_login(request, user)
         # Redirect to where user wanted to go (like /animesdashboard/)
-        next_url = request.GET.get('next')
-        return redirect(next_url) if next_url else redirect('dashboard')
+        #next_url = request.GET.get('next')# the next page(e.g., dashboard is login protect if session logout is done
+        return  redirect('dashboard')
 
     messages.error(request, "Invalid Credential")
     return redirect('login')

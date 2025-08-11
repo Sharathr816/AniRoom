@@ -21,8 +21,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 #for login purposes
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/animesdashboard/' #the "next" url
+# LOGIN_URL = '/login/'
+#LOGIN_REDIRECT_URL = '/animesdashboard/' #the "next" url. Redirects to login page when logged out
 
 TAILWIND_APP_NAME = 'theme'  # tells django-tailwind which app uses tailwind
 
