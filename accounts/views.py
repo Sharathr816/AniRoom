@@ -62,6 +62,11 @@ def login(request):
     return render(request, 'login.html')
 
 
+def logout_view(request):
+    logout(request)
+    return redirect("dashboard")
+
+
 def Profile(request):
     user_data = User.objects.get(username=request.user)
     profile_data = profile.objects.get(user=user_data)

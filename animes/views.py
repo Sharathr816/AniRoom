@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 # Create your views here.
 
-#@login_required #default login url is "login/", should have default in urls.py or change in settings.py LOGIN_URL = /Login/
+#default login url is "login/", should have default in urls.py or change in settings.py LOGIN_URL = /Login/
 def dashboard(request):
     query = request.GET.get("q")
     if query:
