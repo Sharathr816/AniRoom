@@ -34,6 +34,7 @@ class ChatMsg(models.Model):
 class JoinedRooms(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     room = models.ForeignKey(Room, on_delete = models.CASCADE)
+    status = models.CharField(max_length = 25)
 
     class Meta: #to make sure the (user, room) pairs are unique
         constraints = [

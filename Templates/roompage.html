@@ -57,22 +57,23 @@
                     <button class="join-btn">Change</button>
                 </form>
                 </div>
+
+                <div class="Aprroval_section">
+
+                </div>
                 {% endif %}
             {% endif %}
 
             <!--User side-->
             {% else %}
                 {% if request.user.is_authenticated %}
-                <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
-                    <input type="hidden" name="join-room" value="{{ room.id }}">
-                    <button class="join-btn">Join</button>
-                </form>
+                    <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
+                        <input type="hidden" name="join-room" value="{{ room.id }}">
+                        <button class="join-btn">Join</button>
+                    </form>
                 {% endif %}
             {% endif %}
         </div>
-
-
-
 
       </div>
 </div>

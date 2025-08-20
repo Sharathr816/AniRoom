@@ -43,6 +43,7 @@ def room_details(request, id=id):
 
     #Only authenticated user has to previllage to join or manage rooms
     if request.user.is_authenticated:
+        #User side
         joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data)  # None if the user is the uploader
         if joined_room.exists() and request.GET.get("Leave"):
             joined_room.delete()
@@ -52,7 +53,7 @@ def room_details(request, id=id):
         if joined_room.exists():#use filter to handle "no object found error"
             return redirect('ChillPage', id=id)
 
-        #authenticate user
+        #creator side
         if request.user == room_data.uploaded_by:
             #Room details update
             if request.method == "POST" and request.POST.get("Roomedit"):
@@ -72,7 +73,6 @@ def room_details(request, id=id):
             if request.GET.get("delete"):
                 room_data.delete()
                 return redirect('profy')
-
 
             #content upload logic
             if  request.POST.get("RoomUp") and request.method == "POST":
@@ -97,14 +97,16 @@ def room_details(request, id=id):
 def chillPage(request, id=id):
     room_data = Room.objects.get(id=id)
     room_cont = Content.objects.filter(room=room_data)
-    #usgae of django pagination
+    #usage of django pagination
     messages = ChatMsg.objects.filter(room=room_data).order_by('-time_stamp')[:50:-1]#order by gives in decreasing order of timestamp
 
     #Authenticate the user here
     if request.GET.get('join-room'):
         user_data = User.objects.get(username = request.user)
-        JoinedRooms.objects.create(user = user_data, room = room_data)
-        return render(request, 'ChatPage.html', {'room': room_data, 'cont':room_cont, 'Msg': messages})
+        joined_room = JoinedRooms.objects.filter(user = user_data, room = room_data)
+        if not joined_room.exists():
+            JoinedRooms.objects.create(user = user_data, room = room_data, status = "pending")
+            return render(request, 'roompage.html', {'room': room_data})
 
     #saving the chat messages
     elif request.POST.get('textContent'):
@@ -113,9 +115,10 @@ def chillPage(request, id=id):
         #to prevent the "Form resubmission"
         return redirect('ChillPage', id=id)
 
-    # user can enter directly only if he has joined earlier and not the room uploader
-    if not JoinedRooms.objects.filter(user = request.user, room = room_data) and not request.user == room_data.uploaded_by:
-        return redirect('RoomPage', id=id)
+    # if user has not joined room previously and is not a uploader
+    # if not JoinedRooms.objects.filter(user = request.user, room = room_data) and not request.user == room_data.uploaded_by:
+    #     return redirect('RoomPage', id=id)
+
     #if he is a room uploader then he can enter directly
     return render(request, 'ChatPage.html', {'room': room_data, 'cont': room_cont, 'Msg': messages})
 
