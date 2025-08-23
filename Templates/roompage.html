@@ -68,12 +68,18 @@
             {% else %}
                 {% if request.user.is_authenticated %}
                     <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
-                        <input type="hidden" name="join-room" value="{{ room.id }}">
+                        <input type="hidden" name="joinRoom" value="{{ room.id }}">
                         <button class="join-btn">Join</button>
                     </form>
+                    {% if request.GET.joinRoom %}<!-- cant use '-' in joinRoom -->
+                        <p>Your request has been sent</p>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         </div>
+
+
+
 
       </div>
 </div>

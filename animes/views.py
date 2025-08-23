@@ -101,7 +101,7 @@ def chillPage(request, id=id):
     messages = ChatMsg.objects.filter(room=room_data).order_by('-time_stamp')[:50:-1]#order by gives in decreasing order of timestamp
 
     #Authenticate the user here
-    if request.GET.get('join-room'):
+    if request.GET.get('joinRoom'):
         user_data = User.objects.get(username = request.user)
         joined_room = JoinedRooms.objects.filter(user = user_data, room = room_data)
         if not joined_room.exists():
