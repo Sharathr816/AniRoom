@@ -72,7 +72,7 @@
                         <button class="join-btn">Join</button>
                     </form>
                     {% if request.GET.joinRoom %}<!-- cant use '-' in joinRoom -->
-                        <p>Your request has been sent</p>
+                        <p>{{ message }}</p>
                     {% endif %}
                 {% endif %}
             {% endif %}

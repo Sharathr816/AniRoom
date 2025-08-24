@@ -25,6 +25,7 @@ urlpatterns = [
     path('create_room', views.create_room, name = "UpPage"),
     path('room/<int:id>/', views.room_details, name = 'RoomPage'),
     path('Chill/<int:id>/', views.chillPage, name = 'ChillPage'),
-    path('profile/', Profile, name='profy')
+    path('profile/', Profile, name='profy'),
+    path('messages/', views.Approve, name='approvals')
 
 ]

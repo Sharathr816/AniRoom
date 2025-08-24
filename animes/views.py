@@ -44,7 +44,7 @@ def room_details(request, id=id):
     #Only authenticated user has to previllage to join or manage rooms
     if request.user.is_authenticated:
         #User side
-        joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data)  # None if the user is the uploader
+        joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data, status="accept")  # None if the user is the uploader
         if joined_room.exists() and request.GET.get("Leave"):
             joined_room.delete()
             return redirect('profy')
@@ -102,11 +102,21 @@ def chillPage(request, id=id):
 
     #Authenticate the user here
     if request.GET.get('joinRoom'):
+        mess = ""
         user_data = User.objects.get(username = request.user)
         joined_room = JoinedRooms.objects.filter(user = user_data, room = room_data)
         if not joined_room.exists():
             JoinedRooms.objects.create(user = user_data, room = room_data, status = "pending")
-            return render(request, 'roompage.html', {'room': room_data})
+            mess = "Your request to join has been sent \n If accepted the room will be shown in your profile"
+        else:
+            for joined in joined_room:
+                if joined.status == "block":# if in case the creator pressed block by mistake
+                    mess = "You are blocked by the room creator and cannot join again"
+                elif joined.status == "reject":
+                    joined.status = "pending"
+                    mess = "Request sent again \n (Your request was rejected by the creator in previous attempt)"
+                joined.save()
+        return render(request, 'roompage.html', {'room': room_data, 'message':mess})
 
     #saving the chat messages
     elif request.POST.get('textContent'):
@@ -115,11 +125,36 @@ def chillPage(request, id=id):
         #to prevent the "Form resubmission"
         return redirect('ChillPage', id=id)
 
-    # if user has not joined room previously and is not a uploader
-    # if not JoinedRooms.objects.filter(user = request.user, room = room_data) and not request.user == room_data.uploaded_by:
-    #     return redirect('RoomPage', id=id)
+    # user who havent joined + not an uploader, cannot enter the room(during leave and pressing back in browser)
+    if not JoinedRooms.objects.filter(user = request.user, room = room_data) and not request.user == room_data.uploaded_by:
+         return redirect('RoomPage', id=id)
 
-    #if he is a room uploader then he can enter directly
+    #if he is a room uploader/user has already joined then he can enter directly
     return render(request, 'ChatPage.html', {'room': room_data, 'cont': room_cont, 'Msg': messages})
+
+def Approve(request):
+    if request.method == "POST":
+        user = User.objects.get(username=request.POST.get("username"))
+        room = Room.objects.get(id=request.POST.get("roomid"))
+        joined = JoinedRooms.objects.get(user=user,room=room)
+        if request.POST.get("approve"):
+            joined.status = "accept"
+        elif request.POST.get("reject"):
+            joined.status = "reject"
+        elif request.POST.get("block"):
+            joined.status = "block"
+        joined.save()
+        return redirect("approvals")
+
+    room_data = Room.objects.filter(uploaded_by=request.user)
+    creator_room_in_joined = []
+    for room in room_data:
+        joined = JoinedRooms.objects.filter(room=room, status="pending")
+        if joined.exists():
+            creator_room_in_joined.append(joined)
+    return render(request, 'MessageBox.html', {'room_json':creator_room_in_joined})
+
+
+
 
 
