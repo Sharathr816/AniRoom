@@ -9,20 +9,32 @@
     {% if room_json %}
       {% for room in room_json %}
             {% for joined_room_instance in room %}
-                    <p>{{ joined_room_instance.user.username }} is asking permission to join {{ joined_room_instance.room.title }}</p>
-                    <form method="post" action="{% url 'approvals'  %}">
-                      {% csrf_token %}
-                        <input type="hidden" name="username" value="{{ joined_room_instance.user.username }}">
-                        <input type="hidden" name="roomid" value="{{ joined_room_instance.room.id }}">
-                        <button class="Decide-button" type="submit" name="approve" value="1">Approve</button>
-                        <button class="Decide-button" type="submit" name="reject" value="1">Reject</button>
-                        <button class="Decide-button" type="submit" name="block" value="1">block</button>
-                    </form>
+                    <div class="message-bar">
+                        <p>{{ joined_room_instance.user.username }} is asking permission to join {{ joined_room_instance.room.title }}</p>
+                        <form method="post" action="{% url 'approvals'  %}">
+                        {% csrf_token %}
+                            <input type="hidden" name="username" value="{{ joined_room_instance.user.username }}">
+                            <input type="hidden" name="roomid" value="{{ joined_room_instance.room.id }}">
+                            <button class="Decide-button" type="submit" name="approve" value="1">Approve</button>
+                            <button class="Decide-button" type="submit" name="reject" value="1">Reject</button>
+                            <button class="Decide-button" type="submit" name="block" value="1">block</button>
+                        </form>
+                    </div>
             {% endfor %}
       {% endfor %}
+    {% endif %}
 
-    {% else %}
-      <p>Requests to join your rooms are shown here</p>
+    {% if messages %}
+        {% for message in messages %}
+    <div class="message-bar">
+        {% if message.msg_type == "removed" %}
+                <p>You have been removed from the room {{ message.room.title }}</p>
+        {% else %}
+                <p>You have been {{ message.msg_type }} to join the room {{ message.room.title }}</p>
+        {% endif %}
+    </div>
+
+        {% endfor %}
     {% endif %}
   </div>
 

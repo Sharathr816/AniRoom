@@ -9,7 +9,6 @@ class Room(models.Model):
     image = models.ImageField(upload_to = 'anime_images/')
     uploaded_by = models.ForeignKey(User, on_delete = models.CASCADE)#if user deleted, uploads also deleted
     created_at = models.DateTimeField(auto_now_add = True)
-
     def __str__(self):#for 'title' view in admin panel(cause no need of encrypted view)
         return self.title
 
@@ -27,7 +26,6 @@ class ChatMsg(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     chats = models.TextField()
     time_stamp = models.DateTimeField(auto_now_add = True)
-
     def __str__(self):
         return f"{self.user.username} - {self.chats[:30]}"
 
@@ -35,14 +33,23 @@ class JoinedRooms(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     room = models.ForeignKey(Room, on_delete = models.CASCADE)
     status = models.CharField(max_length = 25)
-
+    time_stamp = models.DateTimeField(auto_now_add=True)
     class Meta: #to make sure the (user, room) pairs are unique
         constraints = [
             models.UniqueConstraint(fields=['user', 'room'], name='unique_user_room')
         ]
-
     def __str__(self):
         return self.user.username
 
 
-
+class Messages(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    msg_type = models.CharField(max_length = 25)
+    time_stamp = models.DateTimeField(auto_now_add = True)
+    class Meta: #to make sure the (user, room) pairs are unique
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'room', 'msg_type'], name='unique_user_message')
+        ]
+    def __str__(self):
+        return f"{self.user.username} - {self.msg_type}"

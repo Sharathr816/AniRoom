@@ -16,7 +16,7 @@
 
         <div class="room-actions">
             <!--Creator side-->
-          {% if room.uploaded_by == request.user %}
+          {% if request.user.is_authenticated and room.uploaded_by == request.user %}
             {% if not request.GET.showform %}
             <div class="initial-manage">
                     <form class="manage-room" method="get">
@@ -36,32 +36,39 @@
             </div>
 
             {% else %}
-                {% if request.user.is_authenticated %}
                 <div class="after-manage">
                     <form class="upload-content" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data" >
                     {% csrf_token %}
                         <input type="hidden" name="RoomUp" value="1">
-                    <input class="cont-up" type="file" accept="image/*, video/*, .mkv, .webm, audio/*" name="files"  multiple>
-                    <button class="join-btn">upload</button>
-                </form>
+                        <input class="cont-up" type="file" accept="image/*, video/*, .mkv, .webm, audio/*" name="files"  multiple>
+                        <button class="join-btn">upload</button>
+                    </form>
 
-                <form class="Room-edit" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
+                    <form class="Room-edit" method="post" action="{% url 'RoomPage' room.id %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="hidden" name="Roomedit" value="1">
-                    <input type="text" name="title" placeholder="Enter title...">
-                    <br>
-                    <textarea id="message2" name="desc" rows="5" cols="50" placeholder="Write description..."></textarea>
-                    <br>
-                    <input class="cont-up" type="file" name="photo" accept="image/*">
-                    <br>
-                    <button class="join-btn">Change</button>
-                </form>
+                        <input type="hidden" name="Roomedit" value="1">
+                        <input type="text" name="title" placeholder="Enter title...">
+                        <br>
+                        <textarea id="message2" name="desc" rows="5" cols="50" placeholder="Write description..."></textarea>
+                        <br>
+                        <input class="cont-up" type="file" name="photo" accept="image/*">
+                        <br>
+                        <button class="join-btn">Change</button>
+                    </form>
                 </div>
 
-                <div class="Aprroval_section">
-
+                <div class="joined-users">
+                    {% for query in joined %}
+                    <div class="users-box">
+                        <p class="user-name">{{ query.user.username }}</p>
+                        <form method="post" action="{% url 'RoomPage' room.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="userRemove" value="{{ query.user.username }}">
+                            <button class="join-btn">Remove</button>
+                        </form>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endif %}
             {% endif %}
 
             <!--User side-->
@@ -77,9 +84,6 @@
                 {% endif %}
             {% endif %}
         </div>
-
-
-
 
       </div>
 </div>

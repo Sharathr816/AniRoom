@@ -26,6 +26,6 @@ urlpatterns = [
     path('room/<int:id>/', views.room_details, name = 'RoomPage'),
     path('Chill/<int:id>/', views.chillPage, name = 'ChillPage'),
     path('profile/', Profile, name='profy'),
-    path('messages/', views.Approve, name='approvals')
+    path('messages/', views.Message_box, name='approvals')
 
 ]

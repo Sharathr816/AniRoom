@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import Room, Content, ChatMsg, JoinedRooms
+from .models import Room, Content, ChatMsg, JoinedRooms, Messages
 from django.contrib import messages #to store temparory messages like success, error, warning in queue
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -15,7 +15,6 @@ def dashboard(request):
     else:
         room = Room.objects.all().order_by('-id')
     return render(request, 'dash.html', {'rooms' : room})
-
 
 
 def create_room(request):
@@ -43,20 +42,10 @@ def room_details(request, id=id):
 
     #Only authenticated user has to previllage to join or manage rooms
     if request.user.is_authenticated:
-        #User side
-        joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data, status="accept")  # None if the user is the uploader
-        if joined_room.exists() and request.GET.get("Leave"):
-            joined_room.delete()
-            return redirect('profy')
-
-        #if already joined room (To prevent integrity error in JoinedRooms)
-        if joined_room.exists():#use filter to handle "no object found error"
-            return redirect('ChillPage', id=id)
-
         #creator side
         if request.user == room_data.uploaded_by:
             #Room details update
-            if request.method == "POST" and request.POST.get("Roomedit"):
+            if request.POST.get("Roomedit"):
                 img = request.FILES.get("photo")
                 title = request.POST.get("title")
                 desc = request.POST.get("desc")
@@ -68,14 +57,8 @@ def room_details(request, id=id):
                     room_data.image = img
                 room_data.save()
                 return redirect('RoomPage', id=id)
-
-            #room deletion
-            if request.GET.get("delete"):
-                room_data.delete()
-                return redirect('profy')
-
             #content upload logic
-            if  request.POST.get("RoomUp") and request.method == "POST":
+            if  request.POST.get("RoomUp"):
                 files = request.FILES.getlist("files")
                 for file in files:
                     if file.size > 50*1024*1024:
@@ -90,8 +73,30 @@ def room_details(request, id=id):
                     else:
                         continue
                 return redirect('RoomPage', id=id)
+            #Removing a user from room
+            if request.POST.get("userRemove"):
+                user = User.objects.get(username=request.POST.get("userRemove"))
+                joined_qs = JoinedRooms.objects.get(user=user, room=room_data)
+                joined_qs.delete()
+                Messages.objects.create(user=user, room=room_data, msg_type="removed")
+                return redirect('RoomPage', id=id)
+            # room deletion
+            if request.GET.get("delete"):
+                room_data.delete()
+                return redirect('profy')
 
-    return render(request, 'roompage.html', {'room': room_data})
+        # User side
+        else:
+            joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data, status="accept")
+            if joined_room.exists() and request.GET.get("Leave"):
+                joined_room.delete()
+                return redirect('profy')
+
+            # if already joined room (To prevent integrity error in JoinedRooms)
+            if joined_room.exists():  # use filter to handle "no object found error"
+                return redirect('ChillPage', id=id)
+
+    return render(request, 'roompage.html', {'room': room_data, 'joined': JoinedRooms.objects.filter(room=room_data, status='accept')})
 
 
 def chillPage(request, id=id):
@@ -107,14 +112,14 @@ def chillPage(request, id=id):
         joined_room = JoinedRooms.objects.filter(user = user_data, room = room_data)
         if not joined_room.exists():
             JoinedRooms.objects.create(user = user_data, room = room_data, status = "pending")
-            mess = "Your request to join has been sent \n If accepted the room will be shown in your profile"
+            mess = "Your request to join has been sent"
         else:
             for joined in joined_room:
                 if joined.status == "block":# if in case the creator pressed block by mistake
                     mess = "You are blocked by the room creator and cannot join again"
                 elif joined.status == "reject":
                     joined.status = "pending"
-                    mess = "Request sent again \n (Your request was rejected by the creator in previous attempt)"
+                    mess = "Request sent again to join"
                 joined.save()
         return render(request, 'roompage.html', {'room': room_data, 'message':mess})
 
@@ -132,27 +137,37 @@ def chillPage(request, id=id):
     #if he is a room uploader/user has already joined then he can enter directly
     return render(request, 'ChatPage.html', {'room': room_data, 'cont': room_cont, 'Msg': messages})
 
-def Approve(request):
-    if request.method == "POST":
+
+# Creators choice to let someone in or kick someone out
+def Message_box(request):
+    if request.POST.get("roomid"):
         user = User.objects.get(username=request.POST.get("username"))
         room = Room.objects.get(id=request.POST.get("roomid"))
         joined = JoinedRooms.objects.get(user=user,room=room)
         if request.POST.get("approve"):
             joined.status = "accept"
+            Messages.objects.create(user=user, room=room, msg_type="accepted")
         elif request.POST.get("reject"):
             joined.status = "reject"
-        elif request.POST.get("block"):
+            Messages.objects.create(user=user, room=room, msg_type="rejected")
+        elif request.POST.get("block"):# need a pop up message here
             joined.status = "block"
+            Messages.objects.create(user=user, room=room, msg_type="blocked")
         joined.save()
         return redirect("approvals")
 
+    # Get user requests to join the room of the current user(creator)
     room_data = Room.objects.filter(uploaded_by=request.user)
     creator_room_in_joined = []
     for room in room_data:
         joined = JoinedRooms.objects.filter(room=room, status="pending")
         if joined.exists():
             creator_room_in_joined.append(joined)
-    return render(request, 'MessageBox.html', {'room_json':creator_room_in_joined})
+
+    # Get messages for the current user regarding joining others room
+    message_data = Messages.objects.filter(user=request.user)
+    return render(request, 'MessageBox.html', {'room_json':creator_room_in_joined, 'messages':message_data})
+
 
 
 

@@ -3,9 +3,11 @@ from .models import Room
 from .models import Content
 from .models import ChatMsg
 from .models import JoinedRooms
+from .models import Messages
 
 # Register your models here.
 admin.site.register(Room)
 admin.site.register(Content)
 admin.site.register(ChatMsg)
 admin.site.register(JoinedRooms)
+admin.site.register(Messages)
