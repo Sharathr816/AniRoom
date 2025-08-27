@@ -23,7 +23,7 @@
                     <input type="hidden" name="showform" value="1">
                     <button class="join-btn">Manage</button>
                 </form>
-                <form class="enter-room" method="get" action="{% url 'ChillPage' room.id %}">
+                <form class="enter-room" method="get" action="{% url 'ChillPage' room.id request.user.username %}">
                     <button class="join-btn">Enter</button>
                 </form>
                 {% if messages %}
@@ -74,7 +74,7 @@
             <!--User side-->
             {% else %}
                 {% if request.user.is_authenticated %}
-                    <form class="join-form" method="get" action="{% url 'ChillPage' room.id %}">
+                    <form class="join-form" method="get" action="{% url 'RoomPage' room.id %}">
                         <input type="hidden" name="joinRoom" value="{{ room.id }}">
                         <button class="join-btn">Join</button>
                     </form>

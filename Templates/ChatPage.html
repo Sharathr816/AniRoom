@@ -4,10 +4,10 @@
 {% block content %}
 
 <div class="Chill-room">
-    {% if cont %}
+    {% if room_contents %}
           <div class="room-contents">
             <div class="room-imgs">
-                {% for content in cont %}
+                {% for content in room_contents %}
                     {% if content.img %}
                         <img src="{{ content.img.url }}">
                     {% endif %}
@@ -15,7 +15,7 @@
             </div>
 
               <div class="room-musics">
-                {% for content in cont %}
+                {% for content in room_contents %}
                     {% if content.mus %}
                         <audio controls>
                             <source src="{{ content.mus.url }}" type="audio/mpeg">
@@ -26,7 +26,7 @@
             </div>
 
               <div class="room-videos">
-                {% for content in cont %}
+                {% for content in room_contents %}
                     {% if content.vid %}
                         <video width="320" height="240" controls>
                             <source src="{{ content.vid.url }}" type="video/mp4">
@@ -38,22 +38,22 @@
           </div>
     {% endif %}
 
-    {% if Msg %}
-    <div class="chats">
+    {% if messages %}
+    <div class="chats" id="chat-log">
 
-        {% for chat in Msg %}
+        {% for chat in messages %}
             <div class="text-content-box">
                 <p>{{ chat.chats }}</p>
-                <p>{{ chat.time_stamp }}</p>
+                <p>{{ chat.User.username }}</p>
             </div>
         {% endfor %}
         {% endif %}
 
-        <div class="chat-box">
-            <form method="post" action="{% url 'ChillPage' room.id %}">
+        <div class="chat-box" >
+            <form method="post" action="" id="message-form">
                 {% csrf_token %}
-                <input type="text" name="textContent"  placeholder="Type message...">
-                <button type="submit">Send</button>
+                <input id="chat-message-input" type="text" name="textContent"  placeholder="Type message...">
+                <button type="submit" id="chat-message-submit">Send</button>
             </form>
         </div>
 
@@ -63,5 +63,106 @@
 </div>
 
 <link rel="stylesheet" href="{% static 'css/chatpage.css' %}">
+
+    <script>
+        const roomName = "{{ room_name }}";
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/VRoom/' + roomName + '/'
+        );
+
+        document.getElementById('message-form').addEventListener('submit', function(event){
+        event.preventDefault(); //prevent page reload
+        const message = document.getElementById('chat-message-input').value;
+        chatSocket.send( // send to consumer.py
+            JSON.stringify({
+            'message': message,
+            'room_name': '{{ room_name }}',
+            'sender': '{{ user }}',
+        })
+     );
+    });
+
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').innerHTML += '<div class="text-content-box"><p>' +  data.message + '</p><p>' +  data.sender + '</p></div>';
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- document.querySelector('#chat-message-submit').onclick = function() {-->
+<!--            const messageInputDom = document.querySelector('#chat-message-input');-->
+<!--            const message = messageInputDom.value;-->
+<!--            chatSocket.send(JSON.stringify({-->
+<!--                'sender': {{ user }}-->
+<!--                'room_name':{{ room_name }}-->
+<!--                'message': message-->
+<!--            }));-->
+<!--            messageInputDom.value = '';-->
+<!--        };-->
+
+
+<!--<script>-->
+<!--    // Determine the WebSocket protocol based on the application's URL-->
+<!--    const websocketProtocol = window.location.protocol === "https:" ? "wss" : "ws";-->
+<!--    const wsEndpoint = `${websocketProtocol}://${window.location.host}/ws/notification/{{room_name}}/`;-->
+
+
+<!--    // Form submit listener-->
+<!--    document.getElementById('message-form').addEventListener('submit', function(event){-->
+<!--        event.preventDefault(); //prevent page reload-->
+<!--        const message = document.getElementById('msg').value;-->
+<!--        socket.send( // send to consumer.py-->
+<!--            JSON.stringify({-->
+<!--                'message': message,-->
+<!--                'room_name': '{{ room }}',-->
+<!--                'sender': '{{ request.user }}',-->
+<!--            })-->
+<!--        );-->
+<!--    });-->
+
+<!--     // Response from consumer on the server-->
+<!--    socket.addEventListener("message", (event) => {-->
+<!--        const messageData = JSON.parse(event.data)['message'];-->
+<!--        console.log(messageData);-->
+
+<!--        var sender = messageData['sender'];-->
+<!--        var message = messageData['message'];-->
+
+<!--        // Empty the message input field after the message has been sent-->
+<!--        if (sender == '{{request.user}}'){-->
+<!--            document.getElementById('textContent').value = '';//empty the input field-->
+<!--        }-->
+
+<!--        // Append the message to the chatbox-->
+<!--        var messageDiv = document.querySelector('.chats');-->
+<!--        messageDiv.innerHTML += '<div class="text-content-box"><p>{{ chat.chats }}</p><p>{{ chat.time_stamp }}</p><p>{{ chat.User.username }}</p></div>';-->
+<!--        scrollToBottom();-->
+<!--</script>-->
+
+<!--<script>-->
+<!--    // for automatic bottom scroll-->
+<!--    function scrollToBottom() {-->
+<!--        var chatContainer = document.getElementById("chatContainer");-->
+<!--        chatContainer.scrollTop = chatContainer.scrollHeight;-->
+<!--    }-->
+<!--</script>-->
 
 {% endblock %}

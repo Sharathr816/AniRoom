@@ -43,6 +43,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,6 +55,17 @@ INSTALLED_APPS = [
     'tailwind',#Django-Tailwind integration app.Knows where your Tailwind config lives
     'theme' #app name for styling(consists of tailwind)
 ]
+
+ASGI_APPLICATION = 'ani_repo.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.InMemoryChannelLayer",
+        # "CONFIG": {
+        #     "hosts": [("127.0.0.1", 6379)],  # Redis running locally
+        # },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,7 +98,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-WSGI_APPLICATION = 'ani_repo.wsgi.application'
+# WSGI_APPLICATION = 'ani_repo.wsgi.application'
 
 
 # Database

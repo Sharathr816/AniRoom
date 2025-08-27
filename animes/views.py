@@ -5,7 +5,9 @@ from .models import Room, Content, ChatMsg, JoinedRooms, Messages
 from django.contrib import messages #to store temparory messages like success, error, warning in queue
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-# Create your views here.
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 #default login url is "login/", should have default in urls.py or change in settings.py LOGIN_URL = /Login/
 def dashboard(request):
@@ -92,50 +94,46 @@ def room_details(request, id=id):
                 joined_room.delete()
                 return redirect('profy')
 
+            # request to join room
+            if request.GET.get('joinRoom'):
+                mess = ""
+                joined_room = JoinedRooms.objects.filter(user=request.user, room=room_data)
+                if not joined_room.exists():
+                    JoinedRooms.objects.create(user=request.user, room=room_data, status="pending")
+                    mess = "Your request to join has been sent"
+                else:
+                    for joined in joined_room:
+                        if joined.status == "block":  # if in case the creator pressed block by mistake
+                            mess = "You are blocked by the room creator and cannot join again"
+                        elif joined.status == "reject":
+                            joined.status = "pending"
+                            mess = "Request sent again to join"
+                        joined.save()
+                return render(request, 'roompage.html', {'room': room_data, 'message': mess})
+
             # if already joined room (To prevent integrity error in JoinedRooms)
             if joined_room.exists():  # use filter to handle "no object found error"
-                return redirect('ChillPage', id=id)
+                return redirect('ChillPage', id=id, user=request.user)
 
     return render(request, 'roompage.html', {'room': room_data, 'joined': JoinedRooms.objects.filter(room=room_data, status='accept')})
 
 
-def chillPage(request, id=id):
+def chillPage(request, id, user):
     room_data = Room.objects.get(id=id)
-    room_cont = Content.objects.filter(room=room_data)
-    #usage of django pagination
-    messages = ChatMsg.objects.filter(room=room_data).order_by('-time_stamp')[:50:-1]#order by gives in decreasing order of timestamp
+    contents = Content.objects.filter(room=room_data)
+    messages = ChatMsg.objects.filter(room=room_data)
 
-    #Authenticate the user here
-    if request.GET.get('joinRoom'):
-        mess = ""
-        user_data = User.objects.get(username = request.user)
-        joined_room = JoinedRooms.objects.filter(user = user_data, room = room_data)
-        if not joined_room.exists():
-            JoinedRooms.objects.create(user = user_data, room = room_data, status = "pending")
-            mess = "Your request to join has been sent"
-        else:
-            for joined in joined_room:
-                if joined.status == "block":# if in case the creator pressed block by mistake
-                    mess = "You are blocked by the room creator and cannot join again"
-                elif joined.status == "reject":
-                    joined.status = "pending"
-                    mess = "Request sent again to join"
-                joined.save()
-        return render(request, 'roompage.html', {'room': room_data, 'message':mess})
+    context = {
+        'room_name':room_data.title,
+        'room_contents':contents,
+        'messages':messages,
+        'user':user,
+    }
 
-    #saving the chat messages
-    elif request.POST.get('textContent'):
-        texts = request.POST.get('textContent')
-        ChatMsg.objects.create(room=room_data, user= request.user, chats=texts)
-        #to prevent the "Form resubmission"
-        return redirect('ChillPage', id=id)
 
-    # user who havent joined + not an uploader, cannot enter the room(during leave and pressing back in browser)
-    if not JoinedRooms.objects.filter(user = request.user, room = room_data) and not request.user == room_data.uploaded_by:
-         return redirect('RoomPage', id=id)
 
-    #if he is a room uploader/user has already joined then he can enter directly
-    return render(request, 'ChatPage.html', {'room': room_data, 'cont': room_cont, 'Msg': messages})
+    return render(request, 'ChatPage.html', context)
+
 
 
 # Creators choice to let someone in or kick someone out
@@ -172,4 +170,35 @@ def Message_box(request):
 
 
 
+    #saving the chat messages
+    # if request.POST.get('textContent'):
+    #     texts = request.POST.get('textContent')
+    #     ChatMsg.objects.create(room=room_data, user= request.user, chats=texts)
+    #     #to prevent the "Form resubmission"
+    #     return redirect('ChillPage', id=id)
+
+
+    # room_data = Room.objects.get(id=id)
+    # room_cont = Content.objects.filter(room=room_data)
+    # #usage of django pagination
+    # messages = ChatMsg.objects.filter(room=room_data).order_by('-time_stamp')#[:50:-1]#order by gives in decreasing order of timestamp
+    #
+    # channel_layer = get_channel_layer()
+    #
+    # # Send to all consumers in the group "room_1"
+    # async_to_sync(channel_layer.group_send)(
+    #     "room_1",
+    #     {
+    #         "type": "chat.message",  # will call consumer method `chat_message(self, event)`
+    #         "message": "Hello room!"
+    #     }
+    # )
+    #
+    #
+    # # user who havent joined + not an uploader, cannot enter the room(during leave and pressing back in browser)
+    # if not JoinedRooms.objects.filter(user = request.user, room = room_data) and not request.user == room_data.uploaded_by:
+    #      return redirect('RoomPage', id=id)
+    #
+    # #if he is a room uploader/user has already joined then he can enter directly
+    # return render(request, 'ChatPage.html', {'room': room_data, 'cont': room_cont, 'Msg': messages})
 
