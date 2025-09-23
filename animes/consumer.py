@@ -41,6 +41,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def create_message(self, data):
         get_room_by_name = Room.objects.get(title=data['room_name'])
-        if not ChatMsg.objects.filter(chats=data['message']).exists(): #check out some edge cases here
+        if not ChatMsg.objects.filter(chats=data['message']).exists(): # check out some edge cases here
             new_message = ChatMsg(room=get_room_by_name, user=data['sender'], chats=data['message'])
             new_message.save()

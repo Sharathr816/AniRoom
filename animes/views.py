@@ -130,8 +130,6 @@ def chillPage(request, id, user):
         'user':user,
     }
 
-
-
     return render(request, 'ChatPage.html', context)
 
 
